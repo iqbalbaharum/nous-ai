@@ -1,4 +1,3 @@
-import { AccessControlConditions } from '@lit-protocol/types'
 import rpc from 'adapter/jsonrpc'
 import { Metadata } from 'lib'
 import { formatDataKey } from 'utils'
@@ -10,14 +9,6 @@ export type RPCResponse<T> = {
     err_msg: string
     success: boolean
   } & T
-}
-
-export type NftMetadata = {
-  attributes: Array<{ trait_type: string; value: string }>
-  external_url?: string
-  description: string
-  image: string
-  name: string
 }
 
 export type JSONRPCFilter<C> = {
@@ -53,13 +44,6 @@ export type Transaction = {
   token_key?: string
   version: string
 }
-
-export interface LitProtocolEncryption {
-  encrypted_string: string
-  encrypted_symmetric_key: string
-  access_control_conditions: AccessControlConditions
-}
-
 export interface NousMetadata {
   id: string
 }
@@ -77,7 +61,7 @@ const getMetadataAllVersion = (chain: String, address: String, token_id: String)
   })
 }
 
-const getMetadataUseKeyByBlock = (nftKey: String, meta_contract_id: String, version: String) => {
+const getMetadatasUseKeyByBlock = (nftKey: String, meta_contract_id: String, version: String) => {
   return rpc({
     method: 'POST',
     data: JSON.stringify({
@@ -87,6 +71,26 @@ const getMetadataUseKeyByBlock = (nftKey: String, meta_contract_id: String, vers
       id: '1',
     }),
   })
+}
+
+const getMetadata = async (
+  nftKey: String,
+  metaContractId: String,
+  publicKey: String,
+  alias: String,
+  version: String
+) => {
+  const response = await rpc({
+    method: 'POST',
+    data: JSON.stringify({
+      jsonrpc: '2.0',
+      method: 'get_metadata',
+      params: [nftKey, metaContractId, publicKey, alias, version],
+      id: '1',
+    }),
+  })
+
+  return response.data?.result?.metadata as Metadata
 }
 
 const searchMetadatas = async ({ query = [], ordering = [], from = 0, to = 0 }: Partial<JSONRPCFilter<Metadata>>) => {
@@ -203,8 +207,9 @@ const getTransactions = async (filter: JSONRPCFilter<Transaction>) => {
 }
 
 export default {
+  getMetadata,
   getMetadataAllVersion,
-  getMetadataUseKeyByBlock,
+  getMetadatasUseKeyByBlock,
   getContentFromIpfs,
   publish,
   getMetaContractById,
