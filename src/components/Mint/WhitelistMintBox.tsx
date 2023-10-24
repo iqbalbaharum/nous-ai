@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import RPC from 'utils/ethers'
 import { useAccount } from 'wagmi'
