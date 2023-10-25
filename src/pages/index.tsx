@@ -1,19 +1,10 @@
-import { useBoundStore } from 'store'
-import { useConnectedWallet } from 'hooks/use-connected-wallet'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const PageIndex = () => {
   const navigate = useNavigate()
 
-  const { setModalState, current } = useBoundStore()
-  useConnectedWallet()
 
-  // useEffect(() => {
-  //   if (current) {
-  //     navigate('/inventory')
-  //   }
-  // })
   const [inputValue, setInputValue] = useState<string>('')
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -27,10 +18,11 @@ const PageIndex = () => {
     <div className="h-full w-full flex flex-col justify-center items-center">
       <section className="">
         <h3 className=" w-full p-5 text-center font-extrabold text-2xl">
-          Welcome to <span className="text-red-700">Nous AI</span>
+          Welcome to <span className="text-red-700">Nous Psyche</span>
         </h3>
       </section>
       <div className="w-full h-[600px]">
+        {/* Search Section */}
         <section className="flex flex-col justify-center items-center h-1/4">
           <div className="w-full flex justify-center items-center">
             <input
@@ -42,6 +34,7 @@ const PageIndex = () => {
             />
           </div>
         </section>
+        {/* FAQ Section */}
         <section className=" flex flex-col items-center justify-center">
           <p className="flex gap-2 justify-center p-1 w-3/4 font-medium">
 
@@ -62,7 +55,8 @@ const PageIndex = () => {
             
             Don't know what to ask? Try asking this:
           </p>
-          <div className="flex gap-2 flex-wrap p-3">
+
+          <div className="flex gap-2 flex-wrap px-7 md:p-3">
             <button
               onClick={() => {
                 console.log('yes')
@@ -102,17 +96,7 @@ const PageIndex = () => {
           </div>
         </section>
       </div>
-      {/* <div className="text-center">
-        <h3>Connect wallet to use Nous AI Studio</h3>
-        <div className="mt-2">
-          <button
-            onClick={() => setModalState({ signUpMain: { isOpen: true } })}
-            className="rounded-sm bg-gradient-to-t from-[#7224A7] to-[#FF3065] px-4 py-2"
-          >
-            Connect Wallet
-          </button>
-        </div>
-      </div> */}
+      
     </div>
   )
 }
