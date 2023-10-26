@@ -73,6 +73,8 @@ const WhitelistMintBox = () => {
       getWhitelistClaimed().catch(e => console.log(e))
       setIsLoaded(true)
     }
+
+    
   }, [isLoaded, address])
 
   return (
