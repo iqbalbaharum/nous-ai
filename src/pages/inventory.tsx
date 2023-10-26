@@ -3,16 +3,23 @@ import { useNavigate } from 'react-router-dom'
 import { useGetNftByWalletAddress } from 'repositories/moralis.repository'
 import { useGetOwnedNousMetadatas } from 'repositories/rpc.repository'
 import { PlusIcon } from 'components/Icons/icons'
+import { useEffect, useState } from 'react'
 
 const PageInventory = () => {
   const navigate = useNavigate()
   const { address } = useConnectedWallet()
   const { data: owned } = useGetNftByWalletAddress({ address: address?.full, chain: 'mumbai' })
   const { data: nfts } = useGetOwnedNousMetadatas(address.full, owned?.map(el => `${el.token_id}`) ?? [])
+  const [addressChange, setAddressChange] = useState(address)
+
+  useEffect(() => {
+    setAddressChange(address)
+  }, [address])
 
   const goToMintPage = () => {
     navigate('/mint')
   }
+
 
   return (
     <div className="flex justify-center">
