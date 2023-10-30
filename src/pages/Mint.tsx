@@ -1,5 +1,6 @@
 import PublicMintBox from 'components/Mint/PublicMintBox'
 import WhitelistMintBox from 'components/Mint/WhitelistMintBox'
+import TimelineMint from 'components/Mint/TimelineMint'
 import { useEffect, useState } from 'react'
 import RPC from 'utils/ethers'
 
@@ -141,7 +142,7 @@ const PageMint = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-        <div className="h-32 rounded-lg lg:col-span-2">
+        <div className=" rounded-lg lg:col-span-2">
           <div className="rounded-lg border border-gray-700 bg-orange-300 text-black p-4">
             <div className="text-lg font-bold">Mint your NOUS Bot</div>
             <div className="text-sm">
@@ -158,9 +159,12 @@ const PageMint = () => {
             <PublicMintBox isCompleted={isCompleted} />
             <WhitelistMintBox />
           </div>
+
+         
+          
         </div>
-        <div className="flex flex-col gap-7">
-          <div className="h-32 rounded-lg">
+        <div className="flex flex-col gap-3">
+          <div className=" rounded-lg">
             <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
               <div className="text-lg font-bold mb-4">Progress</div>
               <div className="flex justify-between text-sm">
@@ -186,7 +190,7 @@ const PageMint = () => {
               <div className="mt-3 text-xs">Minting remains open while supplies last.</div>
             </div>
           </div>
-          <div className="h-32 rounded-lg">
+          <div className=" rounded-lg">
             <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
               <div className="text-lg font-bold mb-4">Latest Transaction</div>
               {dummies.map((dummy, index) => (
@@ -202,6 +206,8 @@ const PageMint = () => {
               ))}
             </div>
           </div>
+          <TimelineMint />
+          
         </div>
       </div>
     </>
