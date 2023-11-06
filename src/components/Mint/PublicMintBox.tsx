@@ -125,14 +125,12 @@ const PublicMintBox = (prop: Props) => {
 
   return (
     <>
-      <div className="border-black border-2 rounded-lg p-3 sm:p-6 md:flex-row  flex-col items-center justify-between mt-4 mb-4 bg-white/40">
-        <div className="md:flex md:justify-between gap-2 items-center ">
-          <div className="text-lg font-semibold whitespace-nowrap pr-5 ">Public Sale</div>
-          {prop.isCompleted ? (
-            <div className="text-xs">SOLD OUT</div>
-          ) : (
-            <div className="text-xs">Minting is LIVE from {<b className="font-bold">{showDate()}</b>}</div>
-          )}
+      <div className="border-black border-2 rounded-lg p-4 flex items-center justify-between mt-4 mb-4 bg-white/40">
+        <div>
+          <div className="text-lg font-semibold">Public Sale</div>
+          <div className="text-xs">
+            Minting is LIVE from <b className="font-bold">{showDate()}</b>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row gap-2 justify-center md:justify-end pt-1 ">
           <div className="flex justify-center">

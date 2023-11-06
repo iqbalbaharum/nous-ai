@@ -4,22 +4,16 @@ import { useState } from 'react'
 const TimelineMint = () => {
   const [timelines] = useState([
     {
-      date: '7/11/2023',
+      date: '09 Nov,',
       time: '12:59 PM UTC',
       isDate: true,
-      title: 'Community Bot Mint',
+      title: 'Wave 1',
     },
     {
-      date: '7/11/2023',
+      date: '11 Nov,',
       time: '12:59 PM UTC',
-      isDate: false,
-      title: 'Community Bot Mint',
-    },
-    {
-      date: '7/11/2023',
-      time: '12:59 PM UTC',
-      isDate: false,
-      title: 'Community Bot Mint',
+      isDate: true,
+      title: 'Wave 2',
     },
   ])
 
@@ -32,7 +26,7 @@ const TimelineMint = () => {
             <div className="w-1 relative bg-white">
               {timeline.isDate ? (
                 <div className="absolute top-0 left-1/2 w-5 h-5 bg-white rounded-full  -translate-x-1/2 grid place-content-center">
-               <ClockIcon />
+                  <ClockIcon />
                 </div>
               ) : (
                 <div className="absolute top-0 left-1/2 w-5 h-5 bg-white rounded-full  -translate-x-1/2 grid place-content-center">
@@ -47,8 +41,8 @@ const TimelineMint = () => {
               <div className="text-left border border-gray-300 shadow-lg rounded-md bg-white flex items-center justify-between gap-3 p-4 lg:flex-col xl:flex-row">
                 <div className="w-3 h-3 bg-white absolute left-1 top-3 transform -translate-x-1/2 -translate-y-1/2 rotate-45" />
                 <h3 className="font-semibold text-base text-black">{timeline.title}</h3>
-                <p className="text-sm text-black sm:whitespace-nowrap">
-                  <span className='font-medium'>{timeline.time}</span> {timeline.date}
+                <p className="text-sm text-gray-600 sm:whitespace-nowrap">
+                  {timeline.date} <span className="font-medium">{timeline.time}</span>
                 </p>
               </div>
             </div>

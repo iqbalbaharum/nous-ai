@@ -70,16 +70,17 @@ const WhitelistMintBox = () => {
     }
 
     if (address) {
-      setIsLoaded(false);
-      getWhitelist().then(() => getWhitelistClaimed()).then(()=>setIsLoaded(true)).catch(e => console.log(e))
+      setIsLoaded(false)
+      getWhitelist()
+        .then(() => getWhitelistClaimed())
+        .then(() => setIsLoaded(true))
+        .catch(e => console.log(e))
     }
   }, [address])
 
-
-
   return (
     <>
-      {isWhitelisted && (
+      {isWhitelisted === true && (
         <div className="border-black border-2 rounded-lg p-4 flex items-center justify-between">
           <div>
             <div className="text-lg font-semibold">Full Discount Eligibility</div>

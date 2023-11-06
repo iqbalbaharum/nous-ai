@@ -1,4 +1,6 @@
 import PublicMintBox from 'components/Mint/PublicMintBox'
+import TimelineMint from 'components/Mint/TimelineMint'
+import TransactionMint from 'components/Mint/TransactionMint'
 import WhitelistMintBox from 'components/Mint/WhitelistMintBox'
 import TimelineMint from 'components/Mint/TimelineMint'
 import TransactionMint from 'components/Mint/TransactionMint'
@@ -125,36 +127,32 @@ const PageMint = () => {
             <WhitelistMintBox />
           </div>
         </div>
-        <div className="flex flex-col gap-3">
-          <div className=" rounded-lg">
-            <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
-              <div className="text-lg font-bold mb-4">Progress</div>
-              <div className="flex justify-between text-sm">
-                <span>{isCompleted ? 'SOLD OUT' : `${handleNaNValue()}% minted`}</span>
-                <span className="font-semibold">
-                  {supply}/{max}
-                </span>
-              </div>
-              <div className="mt-1">
-                <span id="ProgressLabel" className="sr-only">
-                  Supply
-                </span>
-
-                <span aria-labelledby="ProgressLabel" className="block rounded-full bg-yellow-100">
-                  <span
-                    className={`block h-4 pt-1 ${
-                      progressPercentage <= 2 ? 'rounded-s-lg' : 'rounded-lg'
-                    }  bg-[repeating-linear-gradient(45deg,_var(--tw-gradient-from)_0,_var(--tw-gradient-from)_20px,_var(--tw-gradient-to)_20px,_var(--tw-gradient-to)_40px)] from-orange-400 to-orange-500`}
-                    style={{ width: `${progressPercentage < 1 ? '0' : progressPercentage}%` }}
-                  >
-                    <span className="font-bold text-white"> </span>
-                  </span>
-                </span>
-              </div>
-              <div className="mt-3 text-xs">Minting remains open while supplies last.</div>
+        <div className="h-32 rounded-lg flex flex-col gap-y-2">
+          <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
+            <div className="text-lg font-bold mb-4">Progress</div>
+            <div className="flex justify-between text-sm">
+              <span>{((supply / max) * 100).toFixed(2)}% minted</span>
+              <span className="font-semibold">
+                {supply}/{max}
+              </span>
             </div>
+            <div className="mt-1">
+              <span id="ProgressLabel" className="sr-only">
+                Supply
+              </span>
+
+              <span aria-labelledby="ProgressLabel" className="block rounded-full bg-yellow-100">
+                <span
+                  className="block h-4 pt-1 rounded-lg bg-[repeating-linear-gradient(45deg,_var(--tw-gradient-from)_0,_var(--tw-gradient-from)_20px,_var(--tw-gradient-to)_20px,_var(--tw-gradient-to)_40px)] from-orange-400 to-orange-500"
+                  style={{ width: `${(supply / max) * 100 < 3 ? 3 : (supply / max) * 100}%` }}
+                >
+                  <span className="font-bold text-white"> </span>
+                </span>
+              </span>
+            </div>
+            <div className="mt-3 text-xs">Minting remains open while supplies last.</div>
           </div>
-          <TransactionMint />
+          {/* <TransactionMint /> */}
           <TimelineMint />
         </div>
       </div>

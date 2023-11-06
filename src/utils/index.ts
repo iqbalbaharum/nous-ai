@@ -59,7 +59,7 @@ export const catchAsync = async <T, A>(asyncFunction: (args: A) => Promise<T>, a
 export function networkToChainId(chain: string) {
   let chainId = ''
   switch (chain.toLowerCase()) {
-    case 'homestead':
+    case 'eth':
       chainId = '1'
       break
     case 'matic':
@@ -94,7 +94,7 @@ export function chainIdToNetwork(chain: string) {
   switch (chain) {
     case 'eth':
     case '1':
-      return 'homestead'
+      return 'eth'
     case '137':
       return 'matic'
     case '56':
@@ -116,7 +116,7 @@ export function chainIdToNetwork(chain: string) {
   }
 }
 export function formatDataKey(chain_id: String, address: String, token_id: String) {
-  const input = `${chain_id}${address?.toLowerCase()}${token_id}`
+  const input = `${chain_id.toLowerCase()}${address?.toLowerCase()}${token_id}`
   const sha256Hash = SHA256(input).toString()
   const uint8Array = hexToUint8Array(sha256Hash)
   return encode(uint8Array)
@@ -185,7 +185,7 @@ export function convertCamelToSnakeCase(obj: Record<string, any>) {
   return obj
 }
 
-const snakeToCamelCase = (str: string) => str.replace(/(\_\w)/g, k => k[1].toUpperCase())
+const snakeToCamelCase = (str: string) => str.replace(/(\\_\w)/g, k => k[1].toUpperCase())
 
 export function convertSnakeToCamelCase(obj: Record<string, any>): any {
   if (Array.isArray(obj)) {
