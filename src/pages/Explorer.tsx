@@ -7,8 +7,8 @@ const PageExplorer = () => {
   return (
     <>
       <div className="w-full">
-        <div className="h-32 rounded-lg w-full">
-          <div className="grid grid-cols-4 gap-2">
+        <div className="h-32 rounded-lg w-full p-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {bots &&
               bots.map((bot, index) => {
                 return (
