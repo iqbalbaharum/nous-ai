@@ -7,9 +7,12 @@ import top from '/img/top.svg'
 import { useGetSingleNousMetadata } from 'repositories/rpc.repository'
 import { useParams } from 'react-router-dom'
 import { v4 } from 'uuid'
+import EditPanel from 'components/EditRoomPage/EditPanel'
 
-const PageRoom = () => {
+const EditRoomPage = () => {
   const { key } = useParams()
+  const [displayImage, setDisplayImage] = useState('')
+  const [presentColor, setPresentColor] = useState('')
 
   useEffect(() => {}, [])
   const [chats, setChats] = useState<Chat[]>([])
@@ -89,22 +92,13 @@ const PageRoom = () => {
     }
   }, [bgColor])
 
-  const textColor = localStorage.getItem('textColor')
-  const imageURL = localStorage.getItem('uploadedImage')
-  
   return (
-    <div className="flex justify-center w-full h-screen" style={{ backgroundImage: `url(${imageURL})`, color: `${textColor}`, backgroundSize: "contain"}}>
-      <div className="flex flex-col w-full h-screen">
+    <div
+      className="flex justify-center w-full h-screen"
+      style={{ backgroundImage: `url(${displayImage})`, color: `${presentColor}`, backgroundSize: "contain" }}
+    >
+      <div className="flex flex-col w-full h-screen bg-contain">
         <div>
-          {/*   <header className="bg-white/10">
-            <div className="px-4 py-2">
-              <div className="">
-                <div className="flex justify-between">
-                  <div className="relative flex items-center"></div>
-                </div>
-              </div>
-            </div>
-          </header> */}
           <header>
             <div className="relative flex justify-center pb-6 md:pb-0">
               <div className="relative md:-translate-y-8 z-10 overflow-hidden">
@@ -116,7 +110,22 @@ const PageRoom = () => {
             </div>
           </header>
         </div>
+        <EditPanel
+          displayImage={displayImage}
+          setDisplayImage={setDisplayImage}
+          presentColor={presentColor}
+          setPresentColor={setPresentColor}
+        />
         <div className="flex-1 overflow-y-auto p-2">
+          <div className="flex p-2 my-2 mx-1 md:mx-16 lg:mx-40">
+            <div className='h-8 w-8 md:h-10 md:w-10 px-3 rounded-md border-[1px] border-[#333335] bg-slate-700'></div>
+
+            <div className="ml-4 mr-2 text-sm">
+              <h5 className="capitalize font-bold text-sm md:pb-1">Sample</h5>
+              <div>This is an example of text coloring or feel free to just start a chat!</div>
+            </div>
+          </div>
+
           {chats.map((chat, index) => {
             return (
               <ChatBubble
@@ -145,4 +154,4 @@ const PageRoom = () => {
   )
 }
 
-export default PageRoom
+export default EditRoomPage
