@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { ApolloClientFilter, apolloQuery, getPerkById, getPerksByTokenId } from 'services/apollo'
 import { RQ_KEY } from 'repositories'
-import { Perk } from 'lib/Perk'
+import { Perk, TokenPerk } from 'lib/Perk'
 import { ethers } from 'ethers'
 import rpc from 'services/rpc'
 import axios from 'axios'
@@ -79,7 +79,27 @@ const useGetPerkByTokenId = (tokenId: number) => {
     queryKey: [RQ_KEY.GET_PERK_BY_TOKEN_ID, tokenId],
     queryFn: async () => {
       const { data } = await getPerksByTokenId(tokenId)
-      return data?.token.tokenPerks
+
+      const ipfsPromises = data.token.tokenPerks.map(tokenperk => {
+        return axios.get((tokenperk as any).perk.cid)
+      })
+
+      const content = await Promise.all(ipfsPromises)
+
+      return data.token.tokenPerks.map((tokenperk, index) => {
+        const c = (content[index] as any).data
+        return {
+          id: (tokenperk as any).perk.id,
+          title: (tokenperk as any).perk.title,
+          description: (tokenperk as any).perk.description,
+          banner: c.image,
+          longDescription: c.description,
+          isPrivate: (tokenperk as any).perk.isPrivate,
+          isActivable: tokenperk.perk.isActivable,
+          isRepurchaseable: (tokenperk as any).perk.isRepurchaseable,
+          forSale: (tokenperk as any).perk.forSale,
+        }
+      })
     },
     enabled: tokenId >= 0,
   })

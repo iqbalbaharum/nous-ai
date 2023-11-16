@@ -1,12 +1,9 @@
-import { ethers } from 'ethers'
-import { Perk } from 'lib/Perk'
 import { useCallback, useState } from 'react'
 import { useNousStore } from 'store'
 import RPC from 'utils/ethers'
 
-interface PurchaseButtonProps {
-  perk: Perk
-  mintPrice: String
+interface Props {
+  perkId: string
 }
 
 const contractABI = [
@@ -14,40 +11,33 @@ const contractABI = [
     inputs: [
       { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
       { internalType: 'uint256', name: 'perkId', type: 'uint256' },
-      {
-        internalType: 'bytes32[]',
-        name: 'merkleProof',
-        type: 'bytes32[]',
-      },
     ],
-    name: 'purchasePerk',
+    name: 'equip',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
 ]
 
-const usePurchasePerk = ({ perk, mintPrice }: PurchaseButtonProps) => {
+const useEquipPerk = ({ perkId }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
   const { selectedNous } = useNousStore()
 
-  const purchasePerk = useCallback(async () => {
+  const equipPerk = useCallback(async () => {
     setIsLoading(true)
     setError(null)
-
-    const price = mintPrice === '0.0' ? `0` : ethers.parseEther(mintPrice.toString())
 
     try {
       const rpc = new RPC(window?.ethereum as any)
       await rpc.callContractMethod({
         contractABI,
         contractAddress: import.meta.env.VITE_NOUS_AI_NFT as string,
-        method: 'purchasePerk',
-        data: [Number(selectedNous?.token_id), Number(perk.id), [] as any],
+        method: 'equip',
+        data: [Number(selectedNous?.token_id) as any, Number(perkId)],
         options: {
-          value: price.toString(),
+          value: '0',
         },
       })
     } catch (error) {
@@ -55,9 +45,9 @@ const usePurchasePerk = ({ perk, mintPrice }: PurchaseButtonProps) => {
     } finally {
       setIsLoading(false)
     }
-  }, [mintPrice, perk, selectedNous])
+  }, [perkId, selectedNous?.token_id])
 
-  return { purchasePerk, isLoading, error }
+  return { equipPerk, isLoading, error }
 }
 
-export default usePurchasePerk
+export default useEquipPerk

@@ -10,7 +10,7 @@ import { useAccount } from 'wagmi'
 const SelectNousModal = () => {
   const [tokenId, setTokenId] = useState(-1)
   const { modal, setModalState } = useBoundStore()
-  const { selectedNous, setSelectedNous, setOwnedPerks } = useNousStore()
+  const { setSelectedNous, setOwnedPerks } = useNousStore()
 
   const { address } = useAccount()
   const { data: owned } = useGetNftByWalletAddress({

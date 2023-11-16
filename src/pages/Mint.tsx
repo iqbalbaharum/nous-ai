@@ -61,7 +61,7 @@ const PageMint = () => {
   }, [isLoaded])
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 z-3">
         <div className="h-32 rounded-lg lg:col-span-2">
           <div className="rounded-lg border border-gray-700 bg-orange-300 text-black p-4">
             <div className="text-lg font-bold">Mint your NOUS Bot</div>

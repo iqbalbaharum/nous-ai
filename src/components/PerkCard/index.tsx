@@ -43,9 +43,9 @@ const PerkCard = (prop: Prop) => {
   return (
     <article className="rounded-md bg-white shadow-md shadow-zinc-500">
       <div className="flex items-start sm:gap-8">
-        <div className="group relative block overflow-hidden">
+        <div className="group relative block overflow-hidden w-full">
           {isOwned && !prop.perk.isRepurchaseable && (
-            <div className="absolute end-0 z-10 p-1.5 text-gray-900 transition bg-green-300 rounded-tr-md">
+            <div className="absolute end-0 z-5 p-1.5 text-gray-900 transition bg-green-300 rounded-tr-md">
               <button className="block w-full rounded uppercase text-green-800 text-center text-xs font-medium">
                 Upgraded
               </button>
@@ -58,7 +58,7 @@ const PerkCard = (prop: Prop) => {
               </button>
             </div>
           )}
-          <img className="rounded-t-md" src={prop.perk.banner as string} />
+          <img className="rounded-t-md object-cover h-20 w-full" src={prop.perk.banner as string} />
           <div className="p-4 cursor-pointer" onClick={onHandleOpenPurchaseModal}>
             <h3 className="text-sm font-medium text-black">{prop.perk.title}</h3>
 

@@ -17,5 +17,6 @@ export interface Token {
 }
 
 export interface TokenPerk {
+  [x: string]: any
   id: string
 }

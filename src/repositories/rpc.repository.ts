@@ -110,8 +110,6 @@ const fetchNousMetadata = async (token_id: string, public_key: string) => {
     token_id
   )
 
-  console.log(data_key)
-
   const [result_metadata, result_nous_storage, result_nous_metadata] = await Promise.all([
     rpc.getMetadata(data_key, '0x01', import.meta.env.VITE_NOUS_METADATA_PK?.toLowerCase() as string, '', data_key),
     rpc.searchMetadatas({
@@ -395,6 +393,7 @@ const useGetLineageNousMetadata = (data_key: string, alias: string, public_key: 
         alias,
         version
       )
+
       if (!metadata.cid) {
         return null
       }

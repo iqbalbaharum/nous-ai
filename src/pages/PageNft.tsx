@@ -13,6 +13,8 @@ import EncryptKnowledgeModal from 'components/Modal/EncryptKnowledge'
 import { useGetLineageNousMetadata } from 'repositories/rpc.repository'
 import useCheckAccess from 'hooks/useCheckRoomAccess'
 import { useGetPerkByTokenId } from 'repositories/perk.repository'
+import Avatar from 'components/Avatar'
+import PerkCardNft from 'components/PerkCard/PerkCardNft'
 
 const PageNft = () => {
   const location = useLocation()
@@ -27,7 +29,6 @@ const PageNft = () => {
   // versions
   const [isDataLoaded, setIsDataLoaded] = useState(false)
 
-  // const { data: metadata } = useGetLineageNftToken(nftKey)
   const { data: perks } = useGetPerkByTokenId(nft.token.id as number)
   const { data: bot_level } = useGetLineageNousMetadata(
     nftKey,
@@ -35,6 +36,8 @@ const PageNft = () => {
     import.meta.env.VITE_NOUS_DATA_PK as string,
     ''
   )
+
+  const { data: badge } = useGetLineageNousMetadata(nftKey, 'badge', import.meta.env.VITE_NOUS_DATA_PK as string, '')
 
   const { hasAccess } = useCheckAccess({
     dataKey: nftKey,
@@ -96,11 +99,26 @@ const PageNft = () => {
             <div className="bg-[#181818] rounded p-4">
               <div className="flex">
                 <div className="flex-auto w-1/4">
-                  <img src={nft.metadata.image} className="rounded-lg bg-white w-full h-full" />
+                  <Avatar
+                    imgMain={nft.metadata.image}
+                    imgBadge="https://nftstorage.link/ipfs/bafybeicuhj6enp3yuteueqyixian62xfs7wd5cr7dif6axxeicbyox6sbe"
+                  />
                 </div>
                 <div className="flex-auto w-3/4 px-5">
-                  <div className="flex justify-between items-center">
-                    <span className="text-2xl font-bold">{nft.metadata.name}</span>
+                  <div className="">
+                    <div className="text-2xl font-bold">{nft.metadata.name}</div>
+                    <div className="mt-2">
+                      {bot_level && bot_level.content?.level >= 0 && (
+                        <span className="bg-green-400 p-1.5 px-3 text-black rounded-md uppercase text-xs">
+                          Level {bot_level.content?.level}
+                        </span>
+                      )}
+                      {!bot_level && (
+                        <span className="bg-yellow-400 p-1.5 px-3 text-black rounded-md uppercase text-xs">
+                          Not Activated
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div>
                     <div className="flex justify-between text-gray-400 text-sm my-2"></div>
@@ -138,17 +156,8 @@ const PageNft = () => {
 
             <div className="mt-5 bg-[#181818] rounded p-4">
               <div className="text-2xl font-semibold mb-4">Purchased Perks</div>
-              <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-6">
-                {perks?.map((perk, index) => (
-                  <button
-                    className="bg-red-900 rounded-lg px-4 py-2 text-white w-full flex items-center justify-center cursor-pointer border border-red-900 hover:border-white"
-                    key={index}
-                  >
-                    <div className="block text-left">
-                      <div className="text-sm mt-1">{(perk as any).perk.title}</div>
-                    </div>
-                  </button>
-                ))}
+              <div className="grid gap-4 sm:grid-cols-4">
+                {perks?.map((perk, index) => <PerkCardNft key={index} perk={perk} />)}
               </div>
               {perks && !perks.length && (
                 <div className="text-center">

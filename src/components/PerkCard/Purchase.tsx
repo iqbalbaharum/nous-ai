@@ -4,10 +4,12 @@ import PurchaseButton from './PurchaseButton'
 import { useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import EquipButton from './EquipButton'
 
 const PurchaseModal = () => {
+  const [isOwned, setIsOwned] = useState(false)
   const { modal, setModalState } = useBoundStore()
-  const { selectedNous } = useNousStore()
+  const { selectedNous, ownedPerks } = useNousStore()
 
   const [showButton, setShowButton] = useState(false)
 
@@ -17,7 +19,14 @@ const PurchaseModal = () => {
     } else {
       setShowButton(false)
     }
-  }, [selectedNous])
+
+    if (ownedPerks.length > 0 && modal.purchasePerk.perk) {
+      const isPerkIncluded = ownedPerks.some(perk => {
+        return perk.id.toString() === modal.purchasePerk.perk?.id
+      })
+      setIsOwned(isPerkIncluded)
+    }
+  }, [modal.purchasePerk.perk, modal.purchasePerk.perk?.id, ownedPerks, selectedNous])
 
   return (
     <>
@@ -28,7 +37,7 @@ const PurchaseModal = () => {
         <div className="fixed inset-0 bg-black/80" aria-hidden="true" />
         <div className="fixed left-1/2 md:w-2/4 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-slate-900 text-white h-full w-full">
           <Dialog.Panel className="h-full">
-            <img className="rounded-t-md h-2/5 w-full object-cover" src={modal.purchasePerk.perk?.banner as string} />
+            <img className="rounded-t-md h-2/5 w-full object-contain" src={modal.purchasePerk.perk?.banner as string} />
             <div className="flex flex-col justify-center p-4">
               <h3 className="font-semibold text-2xl">{modal.purchasePerk.perk?.title}</h3>
               <Markdown className="mt-1 text-sm text-gray-400" remarkPlugins={[remarkGfm]}>
@@ -42,8 +51,11 @@ const PurchaseModal = () => {
               >
                 Cancel
               </button>
-              {showButton && modal.purchasePerk.perk && modal.purchasePerk.perk.forSale && (
+              {showButton && modal.purchasePerk.perk && modal.purchasePerk.perk.forSale && !isOwned && (
                 <PurchaseButton mintPrice={modal.purchasePerk.perk?.price} perk={modal.purchasePerk.perk} />
+              )}
+              {showButton && modal.purchasePerk.perk && isOwned && (
+                <EquipButton perkId={modal.purchasePerk.perk.id as string} />
               )}
             </div>
           </Dialog.Panel>
