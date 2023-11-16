@@ -3,7 +3,7 @@ import questSystemApiInstance from 'adapter/quest-system'
 export const getCampaigns = (address?: string) => {
   return questSystemApiInstance({
     method: 'GET',
-    url: `/campaigns${address !== undefined ? `/address/${address}` : ''}`,
+    url: `/campaigns${address ? `/address/${address}` : ''}`,
   })
 }
 

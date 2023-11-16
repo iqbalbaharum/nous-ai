@@ -21,7 +21,13 @@ const useGetCampaigns = (address?: string) => {
           })
 
           const data = await Promise.all(promises)
-          campaign.perks = data.flatMap(perk => perk.perk)
+
+          campaign.perks = []
+          for (const d of data) {
+            if (d.perk) {
+              campaign.perks.push(d.perk)
+            }
+          }
         }
 
         return campaigns

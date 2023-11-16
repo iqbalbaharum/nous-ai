@@ -5,7 +5,7 @@ export interface Campaign {
   description: String
   isOngoing: Boolean
   perkIds: [number]
-  perks: Perk[]
+  perks: Perk[] | undefined
   quests: [Quest]
   banner?: String
   merkleTreeRoot?: String
