@@ -38,7 +38,6 @@ const PageNft = () => {
   )
 
   const { data: badge } = useGetLineageNousMetadata(nftKey, 'badge', import.meta.env.VITE_NOUS_DATA_PK as string, '')
-
   const { hasAccess } = useCheckAccess({
     dataKey: nftKey,
     tokenId: nft?.token ? nft.token.id : '',
@@ -99,10 +98,7 @@ const PageNft = () => {
             <div className="bg-[#181818] rounded p-4">
               <div className="flex">
                 <div className="flex-auto w-1/4">
-                  <Avatar
-                    imgMain={nft.metadata.image}
-                    imgBadge="https://nftstorage.link/ipfs/bafybeicuhj6enp3yuteueqyixian62xfs7wd5cr7dif6axxeicbyox6sbe"
-                  />
+                  <Avatar imgMain={nft.metadata.image} imgBadge={badge?.src} />
                 </div>
                 <div className="flex-auto w-3/4 px-5">
                   <div className="">
