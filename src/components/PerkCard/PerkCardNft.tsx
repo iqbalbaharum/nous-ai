@@ -3,11 +3,13 @@ import { Perk } from 'lib/Perk'
 
 interface Prop {
   perk: Partial<Perk>
+  tokenId: string
 }
 
-const PerkCardNft = ({ perk }: Prop) => {
+const PerkCardNft = ({ perk, tokenId }: Prop) => {
   const { equipPerk, isLoading, error } = useEquipPerk({
     perkId: perk.id as string,
+    tokenId: tokenId,
   })
 
   const onHandleEquip = async () => {
@@ -20,7 +22,7 @@ const PerkCardNft = ({ perk }: Prop) => {
 
   return (
     <article className="rounded-lg shadow text-center py-2 bg-slate-800 text-slate-100">
-      <h3 className="py-2 font-bold  uppercase text-sm">{perk.title}</h3>
+      <h3 className="py-2 font-bold  uppercase text-sm line-clamp-1">{perk.title}</h3>
       <hr className="w-3/5 h-0.5 mx-auto bg-gray-700 border-0 rounded" />
       <div className="h-1/2">
         <img alt="Office" src={perk.banner as string} className="h-full w-full object-cover" />

@@ -178,7 +178,7 @@ const PageNft = () => {
             <div className="mt-5 bg-[#181818] rounded p-4">
               <div className="text-2xl font-semibold mb-4">Purchased Perks</div>
               <div className="grid gap-4 sm:grid-cols-4">
-                {perks?.map((perk, index) => <PerkCardNft key={index} perk={perk} />)}
+                {perks?.map((perk, index) => <PerkCardNft key={index} perk={perk} tokenId={nft.token_id} />)}
               </div>
               {perks && !perks.length && (
                 <div className="text-center">

@@ -7,12 +7,13 @@ interface Prop {
 }
 
 const EquipButton = (prop: Prop) => {
-  const { equipPerk, isLoading, error } = useEquipPerk({
-    perkId: prop.perkId,
-  })
-
   const { selectedNous } = useNousStore()
   const { setModalState } = useBoundStore()
+
+  const { equipPerk, isLoading, error } = useEquipPerk({
+    perkId: prop.perkId,
+    tokenId: selectedNous?.token_id as string,
+  })
 
   const onHandleEquip = async () => {
     try {
