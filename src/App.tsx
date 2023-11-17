@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains'
+import { base, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
 import { createConfig, configureChains, WagmiConfig } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import MainLayout from 'layouts/MainLayout'
@@ -59,11 +60,12 @@ const App = () => {
   )
 }
 
-const currentChain = [mainnet, polygonMumbai]
+const currentChain = [base, polygonMumbai]
 
 // Web3 Configs
 const { chains, publicClient } = configureChains(currentChain, [
   infuraProvider({ apiKey: String(import.meta.env.VITE_INFURA_ID) }),
+  alchemyProvider({ apiKey: String(import.meta.env.VITE_ALCHEMY_ID) }),
   jsonRpcProvider({
     rpc: chain => {
       return {
