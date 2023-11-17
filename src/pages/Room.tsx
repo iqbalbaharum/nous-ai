@@ -37,8 +37,6 @@ const PageRoom = () => {
     ''
   )
 
-  console.log(`https://nouspsyche-mesolitica-com-${nous_id?.content}-rasa.nous.mesolitica.com/webhooks/rest/webhook`)
-
   const onSendChat = async (message: string) => {
     setDisableChat(true)
 

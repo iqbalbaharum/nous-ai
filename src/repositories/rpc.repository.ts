@@ -322,14 +322,14 @@ const useGetSingleNousMetadata = (data_key: string) => {
             {
               column: 'public_key',
               op: '=',
-              query: import.meta.env.VITE_NOUS_LINEAGE_PK.toLowerCase() as string,
+              query: import.meta.env.VITE_NOUS_METADATA_PK.toLowerCase() as string,
             },
           ],
         }),
         rpc.getMetadata(
           data_key,
           import.meta.env.VITE_NFT_METADATA_META_CONTRACT_ID as String,
-          import.meta.env.VITE_NOUS_LINEAGE_PK.toLowerCase() as String,
+          import.meta.env.VITE_NOUS_METADATA_PK.toLowerCase() as String,
           '',
           data_key
         ),
@@ -370,7 +370,7 @@ const useGetNftMetadata = (data_key: string) => {
       const nft_metadata = await rpc.getMetadata(
         data_key,
         import.meta.env.VITE_NFT_METADATA_META_CONTRACT_ID as String,
-        import.meta.env.VITE_NOUS_LINEAGE_PK.toLowerCase() as String,
+        import.meta.env.VITE_NOUS_METADATA_PK.toLowerCase() as String,
         '',
         ''
       )
