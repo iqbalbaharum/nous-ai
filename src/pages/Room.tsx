@@ -3,7 +3,7 @@ import ChatSubmit from 'components/ChatSubmit'
 import { Chat } from 'lib'
 import { useEffect, useRef, useState } from 'react'
 import { chatWithNous } from 'services/nous'
-import { useGetLineageNftToken, useGetSingleNousMetadata } from 'repositories/rpc.repository'
+import { useGetLineageNftToken, useGetLineageNousMetadata, useGetSingleNousMetadata } from 'repositories/rpc.repository'
 import { useNavigate, useParams } from 'react-router-dom'
 import { v4 } from 'uuid'
 import useCheckAccess from 'hooks/useCheckRoomAccess'
@@ -30,6 +30,15 @@ const PageRoom = () => {
     walletAddress: address.full,
   })
 
+  const { data: nous_id } = useGetLineageNousMetadata(
+    key as string,
+    'nous_id',
+    import.meta.env.VITE_NOUS_DATA_PK as string,
+    ''
+  )
+
+  console.log(`https://nouspsyche-mesolitica-com-${nous_id?.content}-rasa.nous.mesolitica.com/webhooks/rest/webhook`)
+
   const onSendChat = async (message: string) => {
     setDisableChat(true)
 
@@ -47,7 +56,7 @@ const PageRoom = () => {
     setChats(prevChats => [...prevChats, newChat])
 
     try {
-      const res = await chatWithNous(nft?.nous.id as string, name, message)
+      const res = await chatWithNous(nous_id?.content as string, name, message)
       if (res.data.length <= 0) {
         return
       }
@@ -77,9 +86,9 @@ const PageRoom = () => {
   useEffect(() => {
     if (!name) setName(v4())
 
-    if (!hasAccess) {
-      navigate('/')
-    }
+    // if (!hasAccess) {
+    //   navigate('/')
+    // }
   }, [hasAccess, name, navigate])
 
   useEffect(() => {

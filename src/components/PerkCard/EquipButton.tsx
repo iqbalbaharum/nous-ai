@@ -17,6 +17,7 @@ const EquipButton = (prop: Prop) => {
   const onHandleEquip = async () => {
     try {
       await equipPerk()
+      setModalState({ purchasePerk: { isOpen: false, perk: undefined } })
     } catch (e) {
       console.log(e)
     }

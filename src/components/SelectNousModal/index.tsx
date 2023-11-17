@@ -40,7 +40,8 @@ const SelectNousModal = () => {
 
   useEffect(() => {
     if (token) {
-      const perks = token.map(perk => ({ id: (perk as any).perk.id }))
+      console.log(token)
+      const perks = token.map(perk => ({ id: perk?.id }))
       setOwnedPerks(perks)
     }
   }, [setOwnedPerks, token])

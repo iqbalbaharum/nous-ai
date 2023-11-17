@@ -15,7 +15,7 @@ const PerkPrice = ({ price }: { price: String }) => {
 }
 
 const PerkCard = (prop: Prop) => {
-  const [showButton, setShowButton] = useState(false)
+  const [showButton, setShowButton] = useState(true)
   const [isOwned, setIsOwned] = useState(false)
 
   const { setModalState } = useBoundStore()
@@ -26,11 +26,11 @@ const PerkCard = (prop: Prop) => {
   }
 
   useEffect(() => {
-    if (selectedNous) {
-      setShowButton(true)
-    } else {
-      setShowButton(false)
-    }
+    // if (selectedNous) {
+    //   setShowButton(true)
+    // } else {
+    //   setShowButton(false)
+    // }
 
     if (ownedPerks.length > 0) {
       const isPerkIncluded = ownedPerks.some(perk => {
@@ -69,7 +69,7 @@ const PerkCard = (prop: Prop) => {
             </h5>
             {showButton && (
               <div className="flex gap-2">
-                {!isOwned && prop.perk.forSale && (
+                {prop.perk.forSale && (
                   <>
                     <div
                       className="w-1/4 rounded-md bg-white"
@@ -89,6 +89,14 @@ const PerkCard = (prop: Prop) => {
                       </button>
                     )}
                     {isOwned && prop.perk.isRepurchaseable && (
+                      <button
+                        onClick={onHandleOpenPurchaseModal}
+                        className="block w-full rounded bg-yellow-400 text-yellow-800 text-center p-4 text-sm font-medium transition hover:bg-yellow-300"
+                      >
+                        Buy
+                      </button>
+                    )}
+                    {isOwned && !prop.perk.isRepurchaseable && (
                       <button
                         onClick={onHandleOpenPurchaseModal}
                         className="block w-full rounded bg-green-400 text-green-800 text-center p-4 text-sm font-medium transition hover:bg-green-300"

@@ -40,8 +40,8 @@ const useEquipPerk = ({ perkId }: Props) => {
           value: '0',
         },
       })
-    } catch (error) {
-      console.error('Error purchasing perk:', error)
+    } catch (error: any) {
+      throw new Error(error.reason as string)
     } finally {
       setIsLoading(false)
     }

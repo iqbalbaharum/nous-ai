@@ -31,13 +31,13 @@ const PerkCardNft = ({ perk }: Prop) => {
         {perk.isActivable && (
           <button
             onClick={onHandleEquip}
-            className="uppercase rounded bg-green-400 text-green-800 text-center px-4 py-2 text-sm font-medium transition hover:bg-green-300"
+            className="uppercase rounded bg-green-400 text-green-800 text-center px-4 py-2 text-sm font-medium hover:bg-green-300"
           >
             Equip
           </button>
         )}
         {!perk.isActivable && (
-          <span className="uppercase rounded text-green-300 text-center px-4 py-2 text-sm font-medium transition hover:bg-green-300">
+          <span className="uppercase rounded text-green-300 text-center px-4 py-2 text-sm font-medium transition">
             Activated
           </span>
         )}

@@ -51,12 +51,20 @@ const PurchaseModal = () => {
               >
                 Cancel
               </button>
-              {showButton && modal.purchasePerk.perk && modal.purchasePerk.perk.forSale && !isOwned && (
-                <PurchaseButton mintPrice={modal.purchasePerk.perk?.price} perk={modal.purchasePerk.perk} />
-              )}
-              {showButton && modal.purchasePerk.perk && isOwned && (
-                <EquipButton perkId={modal.purchasePerk.perk.id as string} />
-              )}
+              <div className="flex gap-5">
+                {showButton && modal.purchasePerk.perk && modal.purchasePerk.perk.forSale && !isOwned && (
+                  <PurchaseButton mintPrice={modal.purchasePerk.perk?.price} perk={modal.purchasePerk.perk} />
+                )}
+                {showButton && modal.purchasePerk.perk && isOwned && (
+                  <EquipButton perkId={modal.purchasePerk.perk.id as string} />
+                )}
+                {showButton &&
+                  modal.purchasePerk.perk &&
+                  modal.purchasePerk.perk.forSale &&
+                  modal.purchasePerk.perk.isRepurchaseable && (
+                    <PurchaseButton mintPrice={modal.purchasePerk.perk?.price} perk={modal.purchasePerk.perk} />
+                  )}
+              </div>
             </div>
           </Dialog.Panel>
         </div>

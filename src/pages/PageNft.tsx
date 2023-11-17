@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { formatDataKey } from 'utils'
 import { useApi } from 'hooks/use-api'
-import { ChatIcon, DatabaseIcon } from 'components/Icons/icons'
+import { ChatIcon, DatabaseIcon, VerifiedNousIcon } from 'components/Icons/icons'
 import ViewKnowledgeModal from 'components/Modal/ViewKnowledge'
 import { useBoundStore } from 'store'
 import ApiKeyModal from 'components/Modal/ApiKeyModal'
@@ -37,7 +37,16 @@ const PageNft = () => {
     ''
   )
 
+  const { data: nous_id } = useGetLineageNousMetadata(
+    nftKey,
+    'nous_id',
+    import.meta.env.VITE_NOUS_DATA_PK as string,
+    ''
+  )
+
   const { data: badge } = useGetLineageNousMetadata(nftKey, 'badge', import.meta.env.VITE_NOUS_DATA_PK as string, '')
+  const { data: nouskb } = useGetLineageNousMetadata(nftKey, 'nous_kb', import.meta.env.VITE_NOUS_DATA_PK as string, '')
+
   const { hasAccess } = useCheckAccess({
     dataKey: nftKey,
     tokenId: nft?.token ? nft.token.id : '',
@@ -45,7 +54,7 @@ const PageNft = () => {
   })
 
   useEffect(() => {
-    if (!nft) {
+    if (!nft || !nft.token) {
       navigate('/inventory')
     } else {
       setIsDataLoaded(true)
@@ -98,21 +107,37 @@ const PageNft = () => {
             <div className="bg-[#181818] rounded p-4">
               <div className="flex">
                 <div className="flex-auto w-1/4">
-                  <Avatar imgMain={nft.metadata.image} imgBadge={badge?.src} />
+                  <Avatar imgMain={nft.metadata.image} imgBadge={badge?.content.src} />
                 </div>
                 <div className="flex-auto w-3/4 px-5">
                   <div className="">
                     <div className="text-2xl font-bold">{nft.metadata.name}</div>
-                    <div className="mt-2">
+                    <div className="mt-2 grid grid-cols-3 gap-2">
                       {bot_level && bot_level.content?.level >= 0 && (
-                        <span className="bg-green-400 p-1.5 px-3 text-black rounded-md uppercase text-xs">
-                          Level {bot_level.content?.level}
-                        </span>
+                        <div className="bg-yellow-300 text-black rounded-md p-2">
+                          <div className="text-xs text-yellow-800 uppercase">Level</div>
+                          <div className="uppercase font-semibold">Level {bot_level.content?.level}</div>
+                        </div>
                       )}
                       {!bot_level && (
-                        <span className="bg-yellow-400 p-1.5 px-3 text-black rounded-md uppercase text-xs">
-                          Not Activated
-                        </span>
+                        <div className="bg-yellow-300 text-black rounded-md p-2">
+                          <div className="text-xs text-yellow-800 uppercase">Level</div>
+                          <div className="uppercase font-semibold">Not Activated</div>
+                        </div>
+                      )}
+                      {nous_id && nous_id?.content && (
+                        <div className="bg-slate-700 text-black rounded-md p-2">
+                          <div className="text-xs text-slate-400 uppercase">Bot</div>
+                          <div className="text-gray-300 flex items-center gap-2 uppercase font-semibold">
+                            <VerifiedNousIcon /> Nous Activated
+                          </div>
+                        </div>
+                      )}
+                      {nouskb && (
+                        <div className="bg-slate-700 text-black rounded-md p-2">
+                          <div className="text-xs text-slate-400 uppercase">Knowledge Storage Size</div>
+                          <div className="text-gray-300 uppercase font-semibold">{nouskb.content.size_in_mb} MB</div>
+                        </div>
                       )}
                     </div>
                   </div>

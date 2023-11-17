@@ -29,13 +29,13 @@ const contractABI = [
 
 const usePurchasePerk = ({ perk, mintPrice }: PurchaseButtonProps) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
 
   const { selectedNous } = useNousStore()
 
   const purchasePerk = useCallback(async () => {
     setIsLoading(true)
-    setError(null)
+    setError('')
 
     const price = mintPrice === '0.0' ? `0` : ethers.parseEther(mintPrice.toString())
 
@@ -50,8 +50,9 @@ const usePurchasePerk = ({ perk, mintPrice }: PurchaseButtonProps) => {
           value: price.toString(),
         },
       })
-    } catch (error) {
-      console.error('Error purchasing perk:', error)
+    } catch (error: any) {
+      setError(error.reason as string)
+      throw new Error(error.reason as string)
     } finally {
       setIsLoading(false)
     }
