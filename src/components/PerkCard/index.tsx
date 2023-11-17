@@ -26,12 +26,6 @@ const PerkCard = (prop: Prop) => {
   }
 
   useEffect(() => {
-    // if (selectedNous) {
-    //   setShowButton(true)
-    // } else {
-    //   setShowButton(false)
-    // }
-
     if (ownedPerks.length > 0) {
       const isPerkIncluded = ownedPerks.some(perk => {
         return perk.id.toString() === prop.perk.id.toString()

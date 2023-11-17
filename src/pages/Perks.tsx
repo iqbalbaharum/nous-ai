@@ -7,7 +7,7 @@ import { useBoundStore, useNousStore } from 'store'
 
 const PagePerks = () => {
   const { data: perks } = useGetPerks({
-    first: 10,
+    first: 50,
     skip: 0,
   })
 
