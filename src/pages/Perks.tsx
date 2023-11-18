@@ -33,7 +33,7 @@ const PagePerks = () => {
       <div className="flex w-full">
         <div className="w-1/2">
           <img src={selectedNous?.metadata.image} className="-z-10 h-48 w-48" />
-          <div className="p-2 flex flex-col gap-4 overflow-auto h-2/5 relative bottom-0 w-full -top-10 left-5">
+          <div className="p-2 flex flex-col gap-4 overflow-scroll h-2/5 relative bottom-0 w-full -top-10 left-5">
             {perks &&
               perks.map((perk, index) => (
                 <PerkCard

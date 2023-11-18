@@ -11,6 +11,14 @@ interface Prop {
   perk: Perk
 }
 
+const PerkPrice = ({ price }: { price: String }) => {
+  if (price === '0.0') {
+    return 'FREE'
+  } else {
+    return `${price} ETH`
+  }
+}
+
 const DisplayPerk = ({ perk }: Prop) => {
   const [isOwned, setIsOwned] = useState(false)
 
@@ -37,11 +45,12 @@ const DisplayPerk = ({ perk }: Prop) => {
             </div>
             <div className="w-1/2 p-2">
               <div className="flex justify-end">
-                <TypographyNormal>{perk.price}</TypographyNormal>
+                <PerkPrice price={perk.price} />
               </div>
               <hr className="h-px bg-gray-700 border-0 w-full" />
               <div className="flex mt-2 gap-2">
-                <PurchaseButton mintPrice={perk.price} perk={perk} />
+                {(perk && isOwned && perk.isRepurchaseable) ||
+                  (!isOwned && <PurchaseButton mintPrice={perk.price} perk={perk} />)}
                 {perk && isOwned && <EquipButton perkId={perk?.id as string} />}
               </div>
             </div>
