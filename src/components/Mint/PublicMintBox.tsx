@@ -125,6 +125,8 @@ const PublicMintBox = () => {
             onClick={e => handleOnMintClicked()}
             disabled={!price || isDisabled}
             className="text-2xl"
+            color="yellow"
+            textColor="text-yellow-600"
           />
         )}
         {!isAbleToMint && <div className="text-xs text-red-800">Restricted only to a single NFT per wallet</div>}
