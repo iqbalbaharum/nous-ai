@@ -6,7 +6,7 @@ import { formatDataKey } from 'utils'
 import { useApi } from 'hooks/use-api'
 import { ChatIcon, DatabaseIcon, VerifiedNousIcon } from 'components/Icons/icons'
 import ViewKnowledgeModal from 'components/Modal/ViewKnowledge'
-import { useBoundStore } from 'store'
+import { useBoundStore, useNousStore } from 'store'
 import ApiKeyModal from 'components/Modal/ApiKeyModal'
 import { useConnectedWallet } from 'hooks/use-connected-wallet'
 import EncryptKnowledgeModal from 'components/Modal/EncryptKnowledge'
@@ -22,6 +22,7 @@ const PageNft = () => {
   const { rpc } = useApi()
   const { setModalState } = useBoundStore()
   const { address } = useConnectedWallet()
+  const { setOwnedPerks } = useNousStore()
 
   const { nft } = location.state || {}
 
@@ -79,7 +80,11 @@ const PageNft = () => {
     if (nft && !nftKey) {
       init()
     }
-  }, [nft, nftKey])
+
+    if (perks) {
+      setOwnedPerks(perks)
+    }
+  }, [nft, nftKey, perks, setOwnedPerks])
 
   const goToChatroom = () => {
     if (!nftKey) return

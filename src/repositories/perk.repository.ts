@@ -67,7 +67,7 @@ const useGetPerkById = (perkId: number) => {
         id: perk.id,
         title: perk.title,
         description: perk.description,
-        price: ethers.formatEther(perk.price as any),
+        price: ethers.formatEther(perk.price as string),
         banner: 'https://nftstorage.link/ipfs/bafybeieh2ghkfaak7pbv5s6xmwmqpxdfytnbgr3tyjg5tkxt42sihdqfza' as string,
       }
     },
@@ -81,7 +81,7 @@ const useGetPerkByTokenId = (tokenId: number) => {
       const { data } = await getPerksByTokenId(tokenId)
 
       const ipfsPromises = data.token.tokenPerks.map(tokenperk => {
-        return axios.get((tokenperk as any).perk.cid)
+        return axios.get(tokenperk.perk.cid)
       })
 
       const content = await Promise.all(ipfsPromises)
@@ -89,15 +89,15 @@ const useGetPerkByTokenId = (tokenId: number) => {
       return data.token.tokenPerks.map((tokenperk, index) => {
         const c = (content[index] as any).data
         return {
-          id: (tokenperk as any).perk.id,
-          title: (tokenperk as any).perk.title,
-          description: (tokenperk as any).perk.description,
+          id: tokenperk.perk.id,
+          title: tokenperk.perk.title,
+          description: tokenperk.perk.description,
           banner: c.image,
           longDescription: c.description,
-          isPrivate: (tokenperk as any).perk.isPrivate,
+          isPrivate: tokenperk.perk.isPrivate,
           isActivable: tokenperk.perk.isActivable,
-          isRepurchaseable: (tokenperk as any).perk.isRepurchaseable,
-          forSale: (tokenperk as any).perk.forSale,
+          isRepurchaseable: tokenperk.perk.isRepurchaseable,
+          forSale: tokenperk.perk.forSale,
         }
       })
     },
