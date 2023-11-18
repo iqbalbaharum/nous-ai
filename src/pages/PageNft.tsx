@@ -113,7 +113,7 @@ const PageNft = () => {
             <div className="bg-[#181818] rounded p-4">
               <div className="flex">
                 <div className="flex-auto w-1/4">
-                  <Avatar imgMain={nft.metadata.image} imgBadge={badge?.content.src} />
+                  <Avatar imgMain={nft.metadata.image} imgBadge={badge?.content.src} badgeSize="12" />
                 </div>
                 <div className="flex-auto w-3/4 px-5">
                   <div className="">

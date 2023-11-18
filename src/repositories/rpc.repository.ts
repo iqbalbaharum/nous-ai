@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import rpc, { JSONRPCFilter, Transaction, NousMetadata } from '../services/rpc'
+import rpc, { JSONRPCFilter, Transaction } from '../services/rpc'
 import { useIpfs } from 'hooks/use-ipfs'
 import { RQ_KEY } from 'repositories'
 import { chainIdToNetwork, formatDataKey } from 'utils'
 import { Nft, NftMetadata } from 'lib'
 import { getNftsByContractAddress } from 'services/nft'
+import { NousNft } from 'lib/NousNft'
 
 const useGetCompleteTransactions = () => {
   return useQuery({
@@ -55,23 +56,6 @@ const usePublishTransaction = () => {
       }, 5000)
     },
   })
-}
-
-type NousNft = {
-  metadata: NftMetadata & { version: string }
-  knowledge: string[]
-  nous: NousMetadata & { version: string }
-  token: {
-    address: string
-    chain: string
-    id: string
-  }
-  stat: {
-    level: string
-  }
-  achievement: {
-    badge: string
-  }
 }
 
 const createDefaultMetadata = (token_id: string) => {
