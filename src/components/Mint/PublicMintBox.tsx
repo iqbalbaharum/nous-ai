@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import RPC from 'utils/ethers'
 import { useAccount } from 'wagmi'
 import useMinting from './hooks'
+import GenericButton from 'components/Button/GenericButton'
 
 const contractABI = [
   {
@@ -117,24 +118,16 @@ const PublicMintBox = () => {
 
   return (
     <>
-      <div className="border-black border-2 rounded-lg p-4 flex items-center justify-between mt-4 mb-4 bg-white/40">
-        <div>
-          <div className="text-lg font-semibold">Public Sale</div>
-          {!isAbleToMint && <div className="text-xs text-red-800">Restricted only to a single NFT per wallet</div>}
-        </div>
+      <div className="p-4 flex items-center justify-center mt-4 mb-4">
         {isLoaded && !isDisabled && address && (
-          <button
-            className={`group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-gray-500 ${
-              !price || isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
-            }`}
+          <GenericButton
+            name={'Mint Nous Psyche'}
             onClick={e => handleOnMintClicked()}
-          >
-            <span className="absolute rounded-md inset-0 translate-x-0.5 translate-y-0.5 bg-black transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
-            <span className="flex rounded-md items-center relative border border-current bg-white px-10 py-3">
-              {price && <span>Mint</span>}
-            </span>
-          </button>
+            disabled={!price || isDisabled}
+            className="text-2xl"
+          />
         )}
+        {!isAbleToMint && <div className="text-xs text-red-800">Restricted only to a single NFT per wallet</div>}
         {isLoaded && isDisabled && address && (
           <div className="flex flex-col gap-1">
             <button

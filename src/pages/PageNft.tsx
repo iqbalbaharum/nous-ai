@@ -47,6 +47,7 @@ const PageNft = () => {
 
   const { data: badge } = useGetLineageNousMetadata(nftKey, 'badge', import.meta.env.VITE_NOUS_DATA_PK as string, '')
   const { data: nouskb } = useGetLineageNousMetadata(nftKey, 'nous_kb', import.meta.env.VITE_NOUS_DATA_PK as string, '')
+  const { data: access } = useGetLineageNousMetadata(nftKey, 'access', import.meta.env.VITE_NOUS_DATA_PK as string, '')
 
   const { hasAccess } = useCheckAccess({
     dataKey: nftKey,
@@ -140,8 +141,14 @@ const PageNft = () => {
                       )}
                       {nouskb && (
                         <div className="bg-slate-700 text-black rounded-md p-2">
-                          <div className="text-xs text-slate-400 uppercase">Knowledge Storage Size</div>
+                          <div className="text-xs text-slate-400 uppercase">Knowledge Size</div>
                           <div className="text-gray-300 uppercase font-semibold">{nouskb.content.size_in_mb} MB</div>
+                        </div>
+                      )}
+                      {access && (
+                        <div className="bg-slate-700 text-black rounded-md p-2">
+                          <div className="text-xs text-slate-400 uppercase">Access</div>
+                          <div className="text-gray-300 uppercase font-semibold">{access.content}</div>
                         </div>
                       )}
                     </div>

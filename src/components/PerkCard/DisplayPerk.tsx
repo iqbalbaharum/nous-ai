@@ -35,7 +35,7 @@ const DisplayPerk = ({ perk }: Prop) => {
   return (
     <>
       <div className="m-3 h-full">
-        <div className="bg-black/70 ring-2 ring-white border border-blue-600 shadow-2xl h-full">
+        <div className="bg-black/40 ring-1 ring-white backdrop-blur border border-blue-600 shadow-2xl h-full">
           <div className="p-4 bg-blue-500/70 border border-1 border-blue-600">
             <TypographyNormal>{perk.title}</TypographyNormal>
           </div>
@@ -61,6 +61,7 @@ const DisplayPerk = ({ perk }: Prop) => {
               {perk.longDescription}
             </Markdown>
           </div>
+          <div className="absolute uppercase right-1 bottom-1 text-xs px-1 text-blue-300">PERK VER. {perk.id}</div>
         </div>
       </div>
     </>
