@@ -26,9 +26,10 @@ const DisplayPerk = ({ perk }: Prop) => {
 
   useEffect(() => {
     if (ownedPerks.length > 0 && perk) {
-      const isPerkIncluded = ownedPerks.some(perk => {
-        return perk.id.toString() === perk?.id
+      const isPerkIncluded = ownedPerks.some(ownedPerk => {
+        return perk.id.toString() === ownedPerk?.id
       })
+
       setIsOwned(isPerkIncluded)
     }
   }, [ownedPerks, perk])
@@ -49,8 +50,7 @@ const DisplayPerk = ({ perk }: Prop) => {
               </div>
               <hr className="h-px bg-gray-700 border-0 w-full" />
               <div className="flex mt-2 gap-2">
-                {(perk && isOwned && perk.isRepurchaseable) ||
-                  (!isOwned && <PurchaseButton mintPrice={perk.price} perk={perk} />)}
+                {perk && !isOwned && <PurchaseButton mintPrice={perk.price} perk={perk} />}
                 {perk && isOwned && <EquipButton perkId={perk?.id as string} />}
               </div>
             </div>

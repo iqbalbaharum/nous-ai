@@ -22,7 +22,6 @@ const PageInventory = () => {
     chain: import.meta.env.VITE_DEFAULT_CHAIN_NAME,
   })
 
-  console.log(owned)
   const { data: nfts } = useGetOwnedNousMetadatas(address.full, owned?.map(el => `${el.token_id}`) ?? [])
   const goToMintPage = () => {
     navigate('/mint')

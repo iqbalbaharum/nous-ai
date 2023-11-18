@@ -15,6 +15,7 @@ import useCheckAccess from 'hooks/useCheckRoomAccess'
 import { useGetPerkByTokenId } from 'repositories/perk.repository'
 import Avatar from 'components/Avatar'
 import PerkCardNft from 'components/PerkCard/PerkCardNft'
+import GenericButton from 'components/Button/GenericButton'
 
 const PageNft = () => {
   const location = useLocation()
@@ -92,6 +93,11 @@ const PageNft = () => {
     navigate(`/room/${nftKey}`)
   }
 
+  const goToPerk = () => {
+    if (!nftKey) return
+    navigate(`/perks`)
+  }
+
   const goToKnowledge = () => {
     setModalState({
       encryptKnowledge: {
@@ -163,26 +169,11 @@ const PageNft = () => {
             <div className="mt-5 bg-[#181818] rounded p-4">
               <div className="text-2xl font-semibold mb-4">Tools</div>
               <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-4">
-                <button
-                  className="bg-red-900 rounded-lg px-4 py-2 text-white w-full flex items-center justify-center cursor-pointer border border-red-900 hover:border-white"
-                  onClick={() => goToChatroom()}
-                >
-                  <div className="block text-left">
-                    <ChatIcon />
-                    <div className="text-sm mt-1">Chat</div>
-                  </div>
-                </button>
+                <GenericButton name="Chat" onClick={goToChatroom} />
+                <GenericButton name="Shop Perk" onClick={goToPerk} />
 
                 {bot_level && bot_level.content?.level > 0 && (
-                  <button
-                    className="bg-red-900 rounded-lg px-4 py-2 text-white w-full flex items-center justify-center text-center cursor-pointer border border-red-900 hover:border-white"
-                    onClick={() => goToKnowledge()}
-                  >
-                    <div>
-                      <DatabaseIcon />
-                      <div className="text-sm mt-1">Knowledge</div>
-                    </div>
-                  </button>
+                  <GenericButton name="Knowledge" onClick={() => goToKnowledge()} />
                 )}
               </div>
             </div>
