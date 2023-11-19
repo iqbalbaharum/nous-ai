@@ -67,10 +67,10 @@ const PageMint = () => {
           <PublicMintBox />
         </div>
         <div className="flex justify-between text-sm mt-2">
-          <span>{((supply / max) * 100).toFixed(2)}% minted</span>
-          <span className="font-semibold">
+          <TypographyNormal>{((supply / max) * 100).toFixed(2)}% minted</TypographyNormal>
+          <TypographyNormal classNames="font-semibold">
             {supply}/{max}
-          </span>
+          </TypographyNormal>
         </div>
         <div className="mt-1">
           <span id="ProgressLabel" className="sr-only">

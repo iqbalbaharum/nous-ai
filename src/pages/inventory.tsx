@@ -48,7 +48,7 @@ const PageInventory = () => {
         <div className="h-full">
           <div className="p-4">
             <div className="flex justify-start gap-2">
-              <GenericButton name="Mint Bot" onClick={goToMintPage} />
+              <GenericButton name="Mint Nous Psyche" onClick={goToMintPage} />
               <GenericButton name="Opensea" color="blue" textColor="text-blue-600" onClick={() => {}} />
             </div>
             <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2">
