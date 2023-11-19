@@ -51,8 +51,9 @@ const DisplayPerk = ({ perk }: Prop) => {
     <>
       <div className="m-3 h-full">
         <div className="bg-black/40 ring-1 ring-white backdrop-blur border border-blue-600 shadow-2xl h-full">
-          <div className="p-4 bg-blue-500/70 border border-1 border-blue-600">
+          <div className="px-4 py-3 bg-blue-500/70 border border-1 border-blue-600 flex justify-between items-center">
             <TypographyNormal>{perk.title}</TypographyNormal>
+            <TypographyNormal classNames="text-yellow-300 text-xs -mt-1 uppercase">{perk.category}</TypographyNormal>
           </div>
           <div className="flex p-4 w-full">
             <div className="w-1/2 flex justify-center h-48">
@@ -78,7 +79,7 @@ const DisplayPerk = ({ perk }: Prop) => {
             </div>
           </div>
           <hr className="h-px bg-gray-700 border-0" />
-          <div className="p-4 overflow-auto">
+          <div className="p-4 overflow-auto h-1/2">
             <Markdown className="mt-1 text-sm text-gray-200 content-display" remarkPlugins={[remarkGfm]}>
               {perk.longDescription}
             </Markdown>

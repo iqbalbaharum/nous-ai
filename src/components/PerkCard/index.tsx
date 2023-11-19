@@ -1,7 +1,7 @@
 import TypographyNormal from 'components/Typography/Normal'
 import { Perk } from 'lib/Perk'
 import { useEffect, useState } from 'react'
-import { useBoundStore, useNousStore } from 'store'
+import { useNousStore } from 'store'
 
 interface Prop {
   perk: Perk
@@ -19,15 +19,9 @@ const PerkPrice = ({ price }: { price: String }) => {
 }
 
 const PerkCard = (prop: Prop) => {
-  const [showButton, setShowButton] = useState(true)
   const [isOwned, setIsOwned] = useState(false)
 
-  const { setModalState } = useBoundStore()
   const { selectedNous, ownedPerks } = useNousStore()
-
-  const onHandleOpenPurchaseModal = () => {
-    setModalState({ purchasePerk: { isOpen: true, perk: prop.perk } })
-  }
 
   useEffect(() => {
     if (ownedPerks.length > 0) {
@@ -47,7 +41,10 @@ const PerkCard = (prop: Prop) => {
           : 'ring-white/80 from-blue-500 to-blue-700'
       }`}
     >
-      <TypographyNormal classNames="">{prop.perk.title}</TypographyNormal>
+      <TypographyNormal classNames="">
+        {prop.perk.title}{' '}
+        {prop.perk.category && <span className="text-xs text-yellow-300 font-thin">[{prop.perk.category}]</span>}
+      </TypographyNormal>
       <TypographyNormal>
         <PerkPrice price={prop.perk.price} />
       </TypographyNormal>
