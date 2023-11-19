@@ -21,11 +21,13 @@ const EquipButton = (prop: Prop) => {
   const onHandleEquip = async () => {
     try {
       await equipPerk()
-      setModalState({ purchasePerk: { isOpen: false, perk: undefined } })
+      setModalState({
+        alert: { isOpen: true, state: 'success', message: `Equipping Perk ver. ${prop.perkId} success` },
+      })
     } catch (e) {
-      if (error) {
-        prop.onReceivedError(error)
-      }
+      setModalState({
+        alert: { isOpen: true, state: 'failed', message: `Purchase Perk ver. ${prop.perkId} failed: ${error}` },
+      })
       console.log(e)
     }
   }

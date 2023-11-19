@@ -1,6 +1,6 @@
+import AlertBoxSuccess from 'components/AlertBox'
 import PerkCard from 'components/PerkCard'
 import DisplayPerk from 'components/PerkCard/DisplayPerk'
-import PurchaseModal from 'components/PerkCard/Purchase'
 import SelectNousModal from 'components/SelectNousModal'
 import TypographyNormal from 'components/Typography/Normal'
 import { Perk } from 'lib/Perk'
@@ -19,6 +19,7 @@ const PagePerks = () => {
 
   const { selectedNous } = useNousStore()
   const navigate = useNavigate()
+  const { setModalState } = useBoundStore()
 
   const onHandlePerkClicked = (index: number) => {
     setSelectedPerkIndex(index)
@@ -54,7 +55,6 @@ const PagePerks = () => {
           {perks && perks[selectedPerkIndex] && <DisplayPerk perk={perks[selectedPerkIndex]} />}
         </div>
       </div>
-      <PurchaseModal />
       <SelectNousModal />
     </>
   )

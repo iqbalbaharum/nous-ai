@@ -10,7 +10,6 @@ import { useEffect } from 'react'
 interface Prop {
   perk: Perk
   mintPrice: String
-  onReceivedError: (error: string) => void
 }
 
 const PurchaseButton = (prop: Prop) => {
@@ -32,11 +31,13 @@ const PurchaseButton = (prop: Prop) => {
     }
     try {
       await purchasePerk()
-      setModalState({ purchasePerk: { isOpen: false, perk: undefined } })
+      setModalState({
+        alert: { isOpen: true, state: 'success', message: `Purchase Perk ver. ${prop.perk.id} success` },
+      })
     } catch (e) {
-      if (error) {
-        prop.onReceivedError(error)
-      }
+      setModalState({
+        alert: { isOpen: true, state: 'failed', message: `Purchase Perk ver. ${prop.perk.id} failed: ${error}` },
+      })
       console.log(error)
     }
   }

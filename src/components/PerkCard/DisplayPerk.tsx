@@ -29,7 +29,6 @@ const DisplayPerk = ({ perk }: Prop) => {
 
   const { selectedNous, ownedPerks } = useNousStore()
 
-  console.log(perk.longDescription)
   const onReceivedError = (error: string) => {
     setError(error)
   }
@@ -66,15 +65,14 @@ const DisplayPerk = ({ perk }: Prop) => {
                 </TypographyNormal>
               </div>
               <hr className="h-px bg-gray-700 border-0 w-full" />
-              {error && <TypographyNormal classNames="text-xs text-red-500 py-2">{error}</TypographyNormal>}
               <div className="flex mt-2 gap-2">
-                {perk && !isOwned && perk.forSale && (
-                  <PurchaseButton mintPrice={perk.price} perk={perk} onReceivedError={onReceivedError} />
-                )}
+                {perk && !isOwned && perk.forSale && <PurchaseButton mintPrice={perk.price} perk={perk} />}
                 {perk && isOwned && perk.forSale && perk.isRepurchaseable && (
-                  <PurchaseButton mintPrice={perk.price} perk={perk} onReceivedError={onReceivedError} />
+                  <PurchaseButton mintPrice={perk.price} perk={perk} />
                 )}
-                {perk && isOwned && <EquipButton perkId={perk?.id as string} onReceivedError={onReceivedError} />}
+                {perk && isOwned && perk.isActivable && (
+                  <EquipButton perkId={perk?.id as string} onReceivedError={onReceivedError} />
+                )}
               </div>
             </div>
           </div>
