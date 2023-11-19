@@ -2,9 +2,11 @@ import { useBoundStore, useNousStore } from 'store'
 import { Perk } from 'lib/Perk'
 import useEquipPerk from 'hooks/useEquip'
 import GenericButton from 'components/Button/GenericButton'
+import { useEffect } from 'react'
 
 interface Prop {
   perkId: string
+  onReceivedError: (error: string) => void
 }
 
 const EquipButton = (prop: Prop) => {
@@ -21,6 +23,9 @@ const EquipButton = (prop: Prop) => {
       await equipPerk()
       setModalState({ purchasePerk: { isOpen: false, perk: undefined } })
     } catch (e) {
+      if (error) {
+        prop.onReceivedError(error)
+      }
       console.log(e)
     }
   }

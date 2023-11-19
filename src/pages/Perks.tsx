@@ -5,6 +5,7 @@ import SelectNousModal from 'components/SelectNousModal'
 import TypographyNormal from 'components/Typography/Normal'
 import { Perk } from 'lib/Perk'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useGetPerks } from 'repositories/perk.repository'
 import { useBoundStore, useNousStore } from 'store'
 
@@ -17,33 +18,36 @@ const PagePerks = () => {
   })
 
   const { selectedNous } = useNousStore()
-  const { setModalState } = useBoundStore()
+  const navigate = useNavigate()
 
   const onHandlePerkClicked = (index: number) => {
     setSelectedPerkIndex(index)
   }
 
   useEffect(() => {
-    if (!selectedNous) {
-      // setModalState({ selectNous: { isOpen: true } })
+    if (!selectedNous?.token_id) {
+      navigate('/inventory')
     }
-  }, [selectedNous, setModalState])
+  }, [navigate, selectedNous])
+
   return (
     <>
       <div className="flex w-full">
         <div className="w-1/2">
           <img src={selectedNous?.metadata.image} className="-z-10 h-48 w-48" />
-          <div className="p-2 flex flex-col gap-4 overflow-scroll h-2/5 relative bottom-0 w-full -top-10 left-5">
-            {perks &&
-              perks.map((perk, index) => (
-                <PerkCard
-                  key={index}
-                  perk={perk}
-                  index={index}
-                  onClickHandler={onHandlePerkClicked}
-                  onSelectedIndex={selectedPerkIndex}
-                />
-              ))}
+          <div className="relative bottom-0 -top-20 left-5 overflow-auto">
+            <div className="h-96 p-2 flex flex-col gap-4 w-full overflow-y-scroll">
+              {perks &&
+                perks.map((perk, index) => (
+                  <PerkCard
+                    key={index}
+                    perk={perk}
+                    index={index}
+                    onClickHandler={onHandlePerkClicked}
+                    onSelectedIndex={selectedPerkIndex}
+                  />
+                ))}
+            </div>
           </div>
         </div>
         <div className="w-1/2 h-[600px]">

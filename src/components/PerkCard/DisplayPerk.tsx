@@ -11,18 +11,28 @@ interface Prop {
   perk: Perk
 }
 
-const PerkPrice = ({ price }: { price: String }) => {
-  if (price === '0.0') {
+const PerkPrice = ({ perk }: { perk: Perk }) => {
+  if (!perk.forSale) {
+    return 'NOT FOR SALE'
+  }
+
+  if (perk.price === '0.0') {
     return 'FREE'
   } else {
-    return `${price} ETH`
+    return `${perk.price} ETH`
   }
 }
 
 const DisplayPerk = ({ perk }: Prop) => {
   const [isOwned, setIsOwned] = useState(false)
+  const [error, setError] = useState('')
 
   const { selectedNous, ownedPerks } = useNousStore()
+
+  console.log(perk.longDescription)
+  const onReceivedError = (error: string) => {
+    setError(error)
+  }
 
   useEffect(() => {
     if (ownedPerks.length > 0 && perk) {
@@ -31,6 +41,10 @@ const DisplayPerk = ({ perk }: Prop) => {
       })
 
       setIsOwned(isPerkIncluded)
+    }
+
+    if (perk.id) {
+      setError('')
     }
   }, [ownedPerks, perk])
   return (
@@ -46,18 +60,26 @@ const DisplayPerk = ({ perk }: Prop) => {
             </div>
             <div className="w-1/2 p-2">
               <div className="flex justify-end">
-                <PerkPrice price={perk.price} />
+                <TypographyNormal classNames="font-semibold">
+                  <PerkPrice perk={perk} />
+                </TypographyNormal>
               </div>
               <hr className="h-px bg-gray-700 border-0 w-full" />
+              {error && <TypographyNormal classNames="text-xs text-red-500 py-2">{error}</TypographyNormal>}
               <div className="flex mt-2 gap-2">
-                {perk && !isOwned && <PurchaseButton mintPrice={perk.price} perk={perk} />}
-                {perk && isOwned && <EquipButton perkId={perk?.id as string} />}
+                {perk && !isOwned && perk.forSale && (
+                  <PurchaseButton mintPrice={perk.price} perk={perk} onReceivedError={onReceivedError} />
+                )}
+                {perk && isOwned && perk.forSale && perk.isRepurchaseable && (
+                  <PurchaseButton mintPrice={perk.price} perk={perk} onReceivedError={onReceivedError} />
+                )}
+                {perk && isOwned && <EquipButton perkId={perk?.id as string} onReceivedError={onReceivedError} />}
               </div>
             </div>
           </div>
           <hr className="h-px bg-gray-700 border-0" />
           <div className="p-4 overflow-auto">
-            <Markdown className="mt-1 text-sm text-gray-200" remarkPlugins={[remarkGfm]}>
+            <Markdown className="mt-1 text-sm text-gray-200 content-display" remarkPlugins={[remarkGfm]}>
               {perk.longDescription}
             </Markdown>
           </div>

@@ -4,10 +4,13 @@ import usePurchasePerk from './hook/usePurchasePerk'
 import { Perk } from 'lib/Perk'
 import { useAlertMessage } from 'hooks/use-alert-message'
 import GenericButton from 'components/Button/GenericButton'
+import TypographyNormal from 'components/Typography/Normal'
+import { useEffect } from 'react'
 
 interface Prop {
   perk: Perk
   mintPrice: String
+  onReceivedError: (error: string) => void
 }
 
 const PurchaseButton = (prop: Prop) => {
@@ -20,7 +23,6 @@ const PurchaseButton = (prop: Prop) => {
     perkId: prop.perk.id,
   })
 
-  const { selectedNous } = useNousStore()
   const { setModalState } = useBoundStore()
   const { showSuccess } = useAlertMessage()
 
@@ -32,13 +34,15 @@ const PurchaseButton = (prop: Prop) => {
       await purchasePerk()
       setModalState({ purchasePerk: { isOpen: false, perk: undefined } })
     } catch (e) {
+      if (error) {
+        prop.onReceivedError(error)
+      }
       console.log(error)
     }
   }
 
   return (
     <div className="">
-      {error && <div className="text-xs text-red-500 py-2">{error}</div>}
       <GenericButton name={(!isLoading ? `Purchase` : `Processing`) as string} onClick={onHandlePurchase} />
     </div>
   )
