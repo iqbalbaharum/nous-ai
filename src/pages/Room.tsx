@@ -4,7 +4,7 @@ import { Chat } from 'lib'
 import { useEffect, useRef, useState } from 'react'
 import { chatWithNous } from 'services/nous'
 import { useGetLineageNftToken, useGetLineageNousMetadata, useGetSingleNousMetadata } from 'repositories/rpc.repository'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { v4 } from 'uuid'
 import useCheckAccess from 'hooks/useCheckRoomAccess'
 import { useConnectedWallet } from 'hooks/use-connected-wallet'
@@ -107,7 +107,10 @@ const PageRoom = () => {
   return (
     <>
       <div className="min-h-screen z-0 pb-72">
-        <div className="relative flex justify-center h-screen z-10 pb-[230px]">
+        <div className="relative h-screen z-10 pb-[230px]">
+          <div className="w-full mt-4">
+            <Link to="/inventory">Back to NFT</Link>
+          </div>
           <div className="flex flex-col w-full h-screen">
             <div className="flex-1 p-2">
               {chats.map((chat, index) => {
