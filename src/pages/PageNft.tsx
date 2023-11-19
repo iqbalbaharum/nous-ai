@@ -168,7 +168,8 @@ const PageNft = () => {
             <div className="mt-5 bg-[#181818] rounded p-4">
               <div className="text-2xl font-semibold mb-4">Tools</div>
               <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-4">
-                <GenericButton name="Chat" onClick={goToChatroom} />
+                {bot_level && bot_level.content?.level > 0 && <GenericButton name="Chat" onClick={goToChatroom} />}
+
                 <GenericButton name="Shop Perk" onClick={goToPerk} />
 
                 {bot_level && bot_level.content?.level > 0 && (
@@ -185,15 +186,7 @@ const PageNft = () => {
               {perks && !perks.length && (
                 <div className="text-center">
                   <div>You have not purchase any perks</div>
-                  <button
-                    className={`mt-2 group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-gray-500`}
-                    onClick={e => navigate('/perks')}
-                  >
-                    <span className="absolute rounded-md inset-0 translate-x-0.5 translate-y-0.5 bg-green-700 transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
-                    <span className="flex rounded-md items-center relative border border-current bg-green-400 px-10 py-3">
-                      Purchase Now
-                    </span>
-                  </button>
+                  <GenericButton name="Shop Perk" onClick={goToPerk} className="mt-3" />
                 </div>
               )}
             </div>

@@ -47,6 +47,7 @@ const useGetPerks = (variables?: ApolloClientFilter) => {
           isRepurchaseable: perk.isRepurchaseable,
           forSale: perk.forSale,
           cid: perk.cid,
+          category: c.category,
         }
       })
     },
@@ -98,6 +99,7 @@ const useGetPerkByTokenId = (tokenId: number) => {
           isActivable: tokenperk.perk.isActivable,
           isRepurchaseable: tokenperk.perk.isRepurchaseable,
           forSale: tokenperk.perk.forSale,
+          category: c.category,
         }
       })
     },
