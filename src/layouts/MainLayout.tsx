@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Header from '../components/Header'
 import { Web3Wrapper } from 'App'
-import bg from '/public/img/bg.svg'
+import bg from '/public/img/bg.png'
 import AlertBox from 'components/AlertBox'
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
