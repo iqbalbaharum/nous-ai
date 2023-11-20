@@ -2,22 +2,18 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import RPC from 'utils/ethers'
 import { useAccount } from 'wagmi'
+import useMinting from './hooks'
+import GenericButton from 'components/Button/GenericButton'
+import TypographyNormal from 'components/Typography/Normal'
 
 const contractABI = [
   {
     inputs: [],
-    name: 'mintPrice',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
+    name: 'mint',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
-  { inputs: [], name: 'buy', outputs: [], stateMutability: 'payable', type: 'function' },
   {
     inputs: [],
     name: 'paused',
@@ -25,16 +21,34 @@ const contractABI = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ]
 
-interface Props {
-  isCompleted: boolean
-}
-const PublicMintBox = (prop: Props) => {
-  const [price, setPrice] = useState('')
+const PublicMintBox = () => {
   const [isDisabled, setDisabled] = useState(true)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isAbleToMint, setIsAbleToMint] = useState(false)
   const { address } = useAccount()
+
+  const { canMint } = useMinting()
+
+  useEffect(() => {
+    const checkEligible = async () => {
+      const nos = (await canMint()) || 0
+      setIsAbleToMint(nos > 0 ? false : true)
+      setDisabled(nos > 0 ? true : false)
+    }
+
+    if (address) {
+      checkEligible().catch(console.log)
+    }
+  }, [canMint, address])
 
   const handleOnMintClicked = async () => {
     if (isDisabled) {
@@ -44,20 +58,13 @@ const PublicMintBox = (prop: Props) => {
     const rpc = new RPC(window?.ethereum as any)
 
     try {
-      const mintPrice = await rpc.readContractData({
-        contractABI,
-        contractAddress: import.meta.env.VITE_NOUS_AI_NFT,
-        method: 'mintPrice',
-        data: [],
-      })
-
       await rpc.callContractMethod({
         contractABI,
         contractAddress: import.meta.env.VITE_NOUS_AI_NFT,
-        method: 'buy',
+        method: 'mint',
         data: [],
         options: {
-          value: mintPrice,
+          value: '0',
         },
       })
     } catch (e) {
@@ -65,45 +72,7 @@ const PublicMintBox = (prop: Props) => {
     }
   }
 
-  const showDate = () => {
-    const d = new Date(import.meta.env.VITE_PUBLIC_MINT_AFTER_DATE as string)
-
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-    const date = d.getUTCDate().toString().padStart(2, '0') // Pad single digits with 0
-    const month = months[d.getUTCMonth()]
-    const year = d.getUTCFullYear()
-
-    const hours = d.getUTCHours()
-    const minutes = d.getUTCMinutes().toString().padStart(2, '0') // Pad single digits with 0
-
-    return `${date} ${month}, ${year} ${hours}:${minutes} PM UTC`
-  }
-
   useEffect(() => {
-    const getMintPrice = async () => {
-      const rpc = new RPC(window?.ethereum as any)
-
-      const mintPrice = await rpc.readContractData({
-        contractABI,
-        contractAddress: import.meta.env.VITE_NOUS_AI_NFT,
-        method: 'mintPrice',
-        data: [],
-      })
-
-      setPrice(mintPrice as string)
-    }
-
-    if (!price) {
-      getMintPrice().catch(e => console.log(e))
-    }
-
-    const isAfterSaleStartDate = () => {
-      const currentDate = new Date()
-      const saleStartDate = new Date(import.meta.env.VITE_PUBLIC_MINT_AFTER_DATE as string)
-      return currentDate > saleStartDate
-    }
-
     const isPaused = async () => {
       const rpc = new RPC(window?.ethereum as any)
 
@@ -114,57 +83,32 @@ const PublicMintBox = (prop: Props) => {
         data: [],
       })
 
-      setDisabled(flag || !isAfterSaleStartDate())
+      setDisabled(flag)
     }
 
     if (!isLoaded) {
       isPaused().catch(console.log)
       setIsLoaded(true)
     }
-  }, [isLoaded, price])
+  }, [isLoaded])
 
   return (
     <>
-      <div className="border-black border-2 rounded-lg p-4 flex items-center justify-between mt-4 mb-4 bg-white/40">
-        <div>
-          <div className="text-lg font-semibold">Public Sale</div>
-          <div className="text-xs">
-            Minting is LIVE from <b className="font-bold">{showDate()}</b>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-2 justify-center md:justify-end pt-1 ">
-          <div className="flex justify-center">
-            {isLoaded && !isDisabled && address && !prop.isCompleted && (
-              <button
-                className={`group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-gray-500 ${
-                  !price || isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
-                }`}
-                onClick={e => handleOnMintClicked()}
-              >
-                <span className="absolute rounded-md inset-0 translate-x-0.5 translate-y-0.5 bg-black transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
-
-                <span className="flex rounded-md items-center relative border border-current bg-white px-8 py-3">
-                  {price && <span>Mint for {ethers.formatEther(price)}E</span>}
-                </span>
-              </button>
-            )}
-
-            {isLoaded && (isDisabled || prop.isCompleted) && (
-              <button
-                className={`group relative inline-block text-sm font-medium text-black focus:outline-none focus:ring active:text-gray-500 ${
-                  isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
-                }`}
-                onClick={e => handleOnMintClicked()}
-              >
-                <span className="absolute rounded-md inset-0 translate-x-0.5 translate-y-0.5 bg-gray-500 transition-transform"></span>
-                <span className="flex rounded-md items-center relative border border-gray-800 bg-white px-8 py-3">
-                  {'Mint Disabled'}
-                </span>
-              </button>
-            )}
-          </div>
-          {!address && <span className="text-gray-800 grid place-content-center">Please connect to your wallet</span>}
-        </div>
+      <div className="p-4 mt-4 mb-4 text-center">
+        {isLoaded && !isDisabled && address && (
+          <GenericButton
+            name={'Mint Nous Psyche'}
+            onClick={e => handleOnMintClicked()}
+            disabled={isLoaded && isDisabled && address}
+            className="text-2xl"
+            color="yellow"
+            textColor="text-yellow-600"
+          />
+        )}
+        {address && !isAbleToMint && (
+          <TypographyNormal classNames="text-red-600">Restricted only to a single NFT per wallet</TypographyNormal>
+        )}
+        {!address && <TypographyNormal classNames="text-md text-white">Connect to your wallet</TypographyNormal>}
       </div>
     </>
   )

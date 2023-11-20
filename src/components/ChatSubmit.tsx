@@ -45,7 +45,8 @@ const ChatSubmit = (prop: ChatSubmitProp) => {
 
   return (
     <div className="relative py-6">
-      <div className="relative sm:w-full md:w-3/4 lg:w-1/2 mx-auto px-4 flex items-center">
+      <div className="relative sm:w-full md:w-3/4 lg:w-1/2 mx-auto px-4">
+        <div className="bg-blue-800 text-white p-1 text-xs border-blue-600 border">Press ENTER to submit</div>
         <textarea
           id="message"
           ref={textAreaRef}
@@ -62,7 +63,7 @@ const ChatSubmit = (prop: ChatSubmitProp) => {
           disabled={prop.disable}
         />
         <span className="absolute inset-y-0 end-0 grid w-20 place-content-center">
-          <button
+          {/* <button
             type="button"
             className="rounded-full border border-indigo-600 bg-indigo-600 p-3 text-white hover:bg-indigo-300 hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
             style={{ backgroundColor: `${submitColor}`, border: `${submitColor}` }}
@@ -70,7 +71,7 @@ const ChatSubmit = (prop: ChatSubmitProp) => {
             disabled={prop.disable}
           >
             <SubmitChat />
-          </button>
+          </button> */}
         </span>
       </div>
     </div>

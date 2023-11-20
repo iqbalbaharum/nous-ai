@@ -3,13 +3,16 @@ import ChatSubmit from 'components/ChatSubmit'
 import { Chat } from 'lib'
 import { useEffect, useRef, useState } from 'react'
 import { chatWithNous } from 'services/nous'
-import top from '/img/top.svg'
-import { useGetSingleNousMetadata } from 'repositories/rpc.repository'
-import { useParams } from 'react-router-dom'
+import { useGetLineageNftToken, useGetLineageNousMetadata, useGetSingleNousMetadata } from 'repositories/rpc.repository'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { v4 } from 'uuid'
+import useCheckAccess from 'hooks/useCheckRoomAccess'
+import { useConnectedWallet } from 'hooks/use-connected-wallet'
 
 const PageRoom = () => {
   const { key } = useParams()
+  const navigate = useNavigate()
+  const { address } = useConnectedWallet()
 
   useEffect(() => {}, [])
   const [chats, setChats] = useState<Chat[]>([])
@@ -19,6 +22,20 @@ const PageRoom = () => {
   const [bgColor, setBgColor] = useState('')
 
   const { data: nft } = useGetSingleNousMetadata(key as string)
+
+  const { data: metadata } = useGetLineageNftToken(key as string)
+  const { hasAccess } = useCheckAccess({
+    dataKey: key as string,
+    tokenId: metadata?.token ? metadata.token.id : '',
+    walletAddress: address.full,
+  })
+
+  const { data: nous_id } = useGetLineageNousMetadata(
+    key as string,
+    'nous_id',
+    import.meta.env.VITE_NOUS_DATA_PK as string,
+    ''
+  )
 
   const onSendChat = async (message: string) => {
     setDisableChat(true)
@@ -35,12 +52,9 @@ const PageRoom = () => {
     }
 
     setChats(prevChats => [...prevChats, newChat])
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
 
     try {
-      const res = await chatWithNous(nft?.nous.id as string, name, message)
+      const res = await chatWithNous(nous_id?.content as string, name, message)
       if (res.data.length <= 0) {
         return
       }
@@ -62,9 +76,6 @@ const PageRoom = () => {
 
       setChats(prevChats => [...prevChats, resChat])
       setDisableChat(false)
-      if (bottomRef.current) {
-        bottomRef.current.scrollIntoView({ behavior: 'smooth' })
-      }
     } catch (e) {
       console.log(e)
     }
@@ -72,7 +83,11 @@ const PageRoom = () => {
 
   useEffect(() => {
     if (!name) setName(v4())
-  }, [])
+
+    // if (!hasAccess) {
+    //   navigate('/')
+    // }
+  }, [hasAccess, name, navigate])
 
   useEffect(() => {
     const getRandomColor = () => {
@@ -89,9 +104,6 @@ const PageRoom = () => {
     }
   }, [bgColor])
 
-  const textColor = localStorage.getItem('textColor')
-  const imageURL = localStorage.getItem('uploadedImage')
-  
   return (
     <div className="flex justify-center w-full h-screen" style={{ backgroundImage: `url(${imageURL})`, color: `${textColor}`, backgroundSize: "contain"}}>
       <div className="flex flex-col w-full h-screen">
@@ -141,7 +153,12 @@ const PageRoom = () => {
           </div>
         </div>
       </div>
-    </div>
+      <div className="fixed bottom-0 left-0 w-full z-10">
+        <div className="py-6">
+          <ChatSubmit onSendChat={msg => onSendChat(msg)} disable={disableChat} />
+        </div>
+      </div>
+    </>
   )
 }
 
