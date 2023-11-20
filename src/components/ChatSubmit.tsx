@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import { SubmitChat } from './Icons/icons'
+import { useEdit } from './EditRoomPage/useEdit'
 
 interface ChatSubmitProp {
   onSendChat: (message: string) => void
@@ -9,6 +10,7 @@ interface ChatSubmitProp {
 const ChatSubmit = (prop: ChatSubmitProp) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const [message, setMessage] = useState('')
+  const { boxColor, boxTextColor, submitColor } = useEdit()
 
   const handleResize = () => {
     const textArea = textAreaRef.current
@@ -54,7 +56,8 @@ const ChatSubmit = (prop: ChatSubmitProp) => {
           }}
           onKeyUp={handleKeyUp}
           placeholder={prop.disable ? 'Processing...' : 'Type a message'}
-          className="w-full py-3 px-3 text-black rounded-md border-gray-200  shadow-sm text-xs sm:text-sm bg-white"
+          className={`w-full py-3 px-3 text-black rounded-md border-gray-200  shadow-sm text-xs sm:text-sm bg-white placeholder:${boxColor === "#ffffff" ? "text-slate-700" : "text-white"}`}
+          style={{ color: `${boxTextColor}`, backgroundColor: `${boxColor}` }}
           rows={2}
           disabled={prop.disable}
         />
@@ -62,6 +65,7 @@ const ChatSubmit = (prop: ChatSubmitProp) => {
           <button
             type="button"
             className="rounded-full border border-indigo-600 bg-indigo-600 p-3 text-white hover:bg-indigo-300 hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+            style={{ backgroundColor: `${submitColor}`, border: `${submitColor}` }}
             onClick={onSubmit}
             disabled={prop.disable}
           >
