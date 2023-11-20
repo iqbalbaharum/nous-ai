@@ -97,7 +97,7 @@ const PageInventory = () => {
                       imgMain={nfts[selectedNftIndex].metadata.image}
                       imgBadge={nfts[selectedNftIndex].achievement?.badge}
                       className="h-96 w-96"
-                      badgeSize="24"
+                      badgeSize="20"
                     />
                   </>
                 )}
