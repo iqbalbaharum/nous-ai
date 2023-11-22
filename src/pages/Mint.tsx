@@ -107,7 +107,7 @@ const PageMint = () => {
 
   return (
     <>
-      <div className="w-2/5">
+      <div className="w-2/5 pl-2">
         <div className="p-4">
           <PublicMintBox />
         </div>

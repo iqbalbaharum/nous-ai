@@ -18,7 +18,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Web3Wrapper>
-      <img src={backgroundImage} className="absolute object-cover w-screen -z-10" />
+      <img src={backgroundImage} className="fixed object-cover overflow-hidden w-full h-screen -z-10 mx-auto" />
       <Header />
       <hr className="h-px mb-8 bg-gray-700 border-0 dark:bg-gray-700" />
       <div className="container mx-auto text-white">
