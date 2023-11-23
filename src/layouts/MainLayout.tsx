@@ -9,6 +9,7 @@ interface BackgroundImages {
 }
 const backgroundImages: BackgroundImages = {
   '/mint': '/img/minting.png',
+  '/perks': '/img/workshop.png',
 }
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {

@@ -80,13 +80,6 @@ export default function Header() {
               <CommunityIcon />
               Explorer
             </Link>
-            <Link
-              to="/quests"
-              className="flex items-center gap-2 px-4 h-10 py-2 hover:bg-orange-200 hover:text-orange-800 rounded-lg"
-            >
-              <QuestIcon />
-              Quests
-            </Link>
           </div>
           <ConnectButton
             chainStatus={'none'}
