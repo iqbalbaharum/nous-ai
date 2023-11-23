@@ -108,7 +108,7 @@ const PageNft = () => {
     const owned_nft = owned?.find(owned_nft => (owned_nft.token_id = nft.token_id))
 
     if (owned_nft) {
-      let metadata = {
+      const metadata = {
         ...owned_nft.metadata,
         name: owned_nft.metadata?.attributes?.find(attributes => attributes.trait_type === 'name')?.value ?? '',
       }
