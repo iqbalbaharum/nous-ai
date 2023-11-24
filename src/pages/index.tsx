@@ -6,14 +6,10 @@ import botFaq from '/public/img/botfaq.svg'
 
 const quickLinks = [
   'What is Nous Psyche?',
-  'Who is Mesolitica?',
-  'What is Nous Psyche bot?',
   'Tell me about Nous Psyche NFT',
   'Share me your roadmap?',
-  'What is your mission?',
   'Benefits of holding Nous Psyche',
   'How to mint',
-  'How you plan to make chatbot free forever?',
 ]
 
 const PageIndex = () => {
