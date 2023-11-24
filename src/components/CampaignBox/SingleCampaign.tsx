@@ -115,7 +115,7 @@ const SingleCampaignBox = () => {
               leaveFrom="opacity-100 translate-x-0"
               leaveTo="opacity-0 translate-x-full"
             >
-              <div className="fixed left-1/2 md:w-2/4 top-1/2 -translate-x-1 -translate-y-1/2 transform rounded-lg bg-gray-900 text-white h-full w-full">
+              <div className="fixed md:left-1/2 w-3/4 md:w-2/4 top-1/2 -translate-x-1 -translate-y-1/2 transform rounded-lg bg-gray-900 text-white h-full w-full">
                 <Dialog.Panel className="h-full">
                   <div className="w-full p-4 flex justify-between gap-2">
                     <button

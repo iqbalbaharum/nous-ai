@@ -163,11 +163,11 @@ const PageSearch = () => {
           {faqs.map((faq, index) => (
             <div key={index}>
               <div className="">
-                <h1 className="text-3xl bg-blue-600 p-4">
+                <h1 className="text-xl md:text-3xl bg-blue-600 p-4">
                   <TypographyNormal>{faq.question}</TypographyNormal>
                 </h1>
                 <div className="px-4">
-                  <h3 className="font-semibold text-xl items-center flex gap-2 rounded-md py-3">
+                  <h3 className="font-semibold text-md md:text-xl items-center flex gap-2 rounded-md py-3">
                     <AnswerIcon />
                     <TypographyNormal classNames="text-yellow-400">Answers</TypographyNormal>
                   </h3>
@@ -184,7 +184,7 @@ const PageSearch = () => {
                 <StackIcon />
                 <TypographyNormal>Related</TypographyNormal>
               </h3>
-              <div className="text-md pb-4">
+              <div className="text-md pb-2 md:pb-4">
                 {links.map((link, index) => (
                   <div
                     key={index}
