@@ -31,7 +31,7 @@ import PageContainer from 'pages/Container'
 import PageBot2 from 'pages/Bot2'
 import PagePerks from 'pages/Perks'
 import PageQuest from 'pages/Quest'
-import PageExchange from 'pages/exchange'
+import PageExchange from 'pages/Exchange'
 
 const App = () => {
   return (

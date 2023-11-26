@@ -496,7 +496,7 @@ export const CommunityIcon = () => {
   )
 }
 
-export const ExchangeIcon = () => {
+export const SubscribeIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
