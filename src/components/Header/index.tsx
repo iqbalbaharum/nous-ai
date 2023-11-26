@@ -7,7 +7,7 @@ import { useAccount, useNetwork } from 'wagmi'
 import { useBoundStore, useNousStore } from 'store'
 import { CURRENT_CHAIN } from 'store/slices/wallet.slice'
 import logo from '/img/logo.png'
-import { CommunityIcon, InventoryIcon, MintIcon, PerksIcon, QuestIcon } from 'components/Icons/icons'
+import { CommunityIcon, InventoryIcon, MintIcon, ExchangeIcon } from 'components/Icons/icons'
 import { useConnectedWallet } from 'hooks/use-connected-wallet'
 
 export default function Header() {
@@ -86,6 +86,16 @@ export default function Header() {
             >
               <CommunityIcon />
               Explorer
+            </Link>
+
+            <Link
+              to="/exchange"
+              className={`flex items-center gap-2 px-4 py-2 h-full border-r border-l hover:bg-blue-600 backdrop-blur bg-black/60 ${
+                location.pathname === '/exchange' ? 'bg-blue-600/80' : ''
+              }`}
+            >
+              <ExchangeIcon />
+              Exchange
             </Link>
           </div>
           <ConnectButton
