@@ -5,15 +5,17 @@ import { NousNft } from 'lib/NousNft'
 import SubscribeButton from './SubscribeButton'
 import UnsubscribeButton from './UnsubscribeButton'
 import GoToDappButton from './GoDapp'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SubscribePrice from './SubscribePrice'
 import ExchangeTransaction from './Transactions'
-
+import useUserKeyBalance from './hooks/useGetUserBalance'
 interface Prop {
   nft: Nft & NousNft & { dataKey: string }
 }
 
 const DisplayExchange = (prop: Prop) => {
+  const { keyCount, totalTokenKeyCount } = useUserKeyBalance(prop.nft.token_id as string)
+
   return (
     <div className="h-full">
       <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500 to-blue-700/60 ring-2 ring-white backdrop-blur border border-blue-600 shadow-2xl h-full">
@@ -22,16 +24,16 @@ const DisplayExchange = (prop: Prop) => {
         </div>
         <div className="flex justify-between px-4 items-center py-2">
           <TypographyNormal classNames="text-orange-400 font-semibold text-lg tracking-wider uppercase">
-            30 subscriber
+            {totalTokenKeyCount} subscriber
           </TypographyNormal>
         </div>
         <hr className="h-px bg-blue-800 border-0 w-full" />
         <div className="flex gap-2 p-4 items-center bg-blue-800/60">
           <div className="w-1/2 border-r border-blue-800/60">
-            <SubscribeButton nft={prop.nft} />
+            <SubscribeButton nft={prop.nft} currentKeyCount={keyCount} />
           </div>
           <div className="flex-auto">
-            <UnsubscribeButton nft={prop.nft} />
+            <UnsubscribeButton nft={prop.nft} currentKeyCount={keyCount} />
           </div>
         </div>
         <hr className="h-px bg-blue-800 border-0 w-full" />

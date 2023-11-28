@@ -1,6 +1,6 @@
 interface ButtonProp {
   className?: string
-  name: string
+  name?: string
   onClick: (e: any) => void
   icon?: React.ReactNode
   disabled?: boolean
@@ -45,6 +45,7 @@ const GenericButton = ({ name, onClick, icon, className, disabled, color, textCo
         }-900 opacity-0 group-hover:opacity-100`}
       ></span>
       <span className="relative transition-colors duration-100 delay-200 group-hover:text-white ease">
+        {icon}
         <span className="uppercase">{name}</span>
       </span>
     </button>

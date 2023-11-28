@@ -1,5 +1,5 @@
 interface Prop {
-  count: number
+  count: string
 }
 
 const SubscribePrice = ({ count }: Prop) => {
