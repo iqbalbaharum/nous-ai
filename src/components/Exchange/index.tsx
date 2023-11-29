@@ -13,9 +13,9 @@ const ExchangeCard = (prop: Prop) => {
   return (
     <div
       onClick={() => prop.onClickHandler(prop.index)}
-      className={`lg:w-4/5 border relative ring-2 border-slate-600 p-2 py-2 flex justify-between items-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${
+      className={`lg:w-4/5 w-full border relative ring-2 border-slate-600 p-2 py-2 flex justify-between items-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${
         prop.onSelectedIndex === prop.index
-          ? 'left-5 ring-white/90 from-yellow-500 to-yellow-600'
+          ? 'md:left-5 ring-white/90 from-yellow-500 to-yellow-600'
           : 'ring-white/80 from-blue-500 to-blue-700'
       }`}
     >
