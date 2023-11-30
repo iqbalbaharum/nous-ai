@@ -43,6 +43,11 @@ const useGetBuyPrice = ({ tokenId, amount }: Prop) => {
     setIsLoading(true)
     setError('')
 
+    if (amount == 0) {
+      setBuyPrice(`0`)
+      return
+    }
+
     try {
       const rpc = new RPC(window?.ethereum as any)
 
@@ -53,11 +58,9 @@ const useGetBuyPrice = ({ tokenId, amount }: Prop) => {
         data: [tokenId, amount.toString()],
       })
 
-      const subscribePrice = price === '0.0' ? `0` : ethers.parseEther(price.toString())
-
+      const subscribePrice = price === '0.0' ? `0` : ethers.formatEther(price.toString())
       setBuyPrice(subscribePrice.toString())
     } catch (error: any) {
-      console.log(error)
       setError(error.reason as string)
       throw new Error(error.reason as string)
     } finally {

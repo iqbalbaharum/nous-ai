@@ -7,27 +7,42 @@ import { Nft } from 'lib'
 import { NousNft } from 'lib/NousNft'
 import useSubscription from './hooks/useSubscription'
 import useGetBuyPrice from './hooks/useGetBuyPrice'
+import { useBoundStore } from 'store'
 
 interface Prop {
-  nft: Nft & NousNft
-  currentKeyCount: number
+  tokenId: string
+  userKeyCount: number
 }
 
 const SubscribeButton = (prop: Prop) => {
   const [subscribeCount, setSubscribeCount] = useState(0)
 
-  const { subscribe } = useSubscription()
-  const { buyPrice } = useGetBuyPrice({ tokenId: prop.nft.token_id as string, amount: subscribeCount })
+  const { setModalState } = useBoundStore()
 
-  const onClickSubscribe = () => {
-    subscribe(prop.nft.token_id as string, subscribeCount).catch(console.log)
+  const { subscribe } = useSubscription()
+  const { buyPrice } = useGetBuyPrice({
+    tokenId: prop.tokenId,
+    amount: subscribeCount,
+  })
+
+  const onClickSubscribe = async () => {
+    try {
+      await subscribe(prop.tokenId, subscribeCount)
+      setModalState({
+        alert: { isOpen: true, state: 'success', message: `Succesfully subscribed to Nous Psyche #${prop.tokenId}` },
+      })
+    } catch (e) {
+      setModalState({
+        alert: { isOpen: true, state: 'failed', message: `Subscription purchased failed` },
+      })
+    }
   }
 
   useEffect(() => {
-    if (prop.nft.token_id) {
+    if (prop.tokenId) {
       setSubscribeCount(0)
     }
-  }, [prop.nft.token_id])
+  }, [prop.tokenId])
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -35,6 +50,8 @@ const SubscribeButton = (prop: Prop) => {
         <TypographyNormal classNames="text-green-400 text-md font-semibold tracking-wider uppercase">
           <SubscribePrice count={buyPrice} /> ETH
         </TypographyNormal>
+      </div>
+      <div>
         <QuantityInput input={subscribeCount} setInput={setSubscribeCount} />
       </div>
       <GenericButton name="Subscribe" onClick={onClickSubscribe} />

@@ -24,7 +24,8 @@ export type Modal = {
   purchasePerk: ModalState & { perk: Perk | undefined }
   selectNous: ModalState
   campaign: ModalState & { campaign?: Campaign }
-  alert: ModalState & { state: string } & { message: string }
+  referral: ModalState
+  alert: ModalState & { state: string } & { message: string; onOkClicked?: () => void }
 }
 
 export interface ModalSlice {
@@ -78,10 +79,14 @@ const initialModal = {
       isOpen: false,
       campaign: undefined,
     },
+    referral: {
+      isOpen: false,
+    },
     alert: {
       isOpen: false,
       state: '',
       message: '',
+      onOkClicked: () => {},
     },
   },
 }

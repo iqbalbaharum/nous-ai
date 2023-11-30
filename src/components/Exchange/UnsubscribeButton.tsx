@@ -10,11 +10,11 @@ import useSubscription from './hooks/useSubscription'
 
 interface Prop {
   nft: Nft & NousNft
-  currentKeyCount: number
+  userKeyCount: number
 }
 
 const UnsubscribeButton = (prop: Prop) => {
-  const [subscribeCount, setSubscribeCount] = useState(prop.currentKeyCount)
+  const [subscribeCount, setSubscribeCount] = useState(prop.userKeyCount)
 
   const { unsubscribe } = useSubscription()
   const { sellPrice } = useGetSellPrice({ tokenId: prop.nft.token_id as string, amount: subscribeCount })
@@ -25,9 +25,9 @@ const UnsubscribeButton = (prop: Prop) => {
 
   useEffect(() => {
     if (prop.nft.token_id) {
-      setSubscribeCount(0)
+      setSubscribeCount(prop.userKeyCount ?? 0)
     }
-  }, [prop.nft.token_id])
+  }, [prop.userKeyCount, prop.nft.token_id])
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -35,7 +35,9 @@ const UnsubscribeButton = (prop: Prop) => {
         <TypographyNormal classNames="text-red-400 text-md font-semibold tracking-wider uppercase">
           <SubscribePrice count={sellPrice} /> ETH
         </TypographyNormal>
-        <QuantityInput input={subscribeCount} setInput={setSubscribeCount} />
+      </div>
+      <div>
+        <QuantityInput input={subscribeCount} setInput={setSubscribeCount} max={prop.userKeyCount} />
       </div>
       <GenericButton name="Unsubscribe" onClick={onClickUnsubscribe} />
     </div>

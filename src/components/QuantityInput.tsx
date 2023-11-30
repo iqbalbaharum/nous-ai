@@ -1,11 +1,18 @@
+import { useEffect } from 'react'
+
 interface Prop {
   input: number
+  min?: number
+  max?: number
   setInput: (input: number) => void
 }
 
-const QuantityInput = ({ input, setInput }: Prop) => {
+const QuantityInput = ({ min, max, input, setInput }: Prop) => {
   const onHandleInputPlus = (e: any) => {
-    const quantity = input + 1
+    let quantity = input + 1
+    if (max && quantity > max) {
+      quantity = max
+    }
     setInput(quantity)
   }
 
@@ -13,7 +20,11 @@ const QuantityInput = ({ input, setInput }: Prop) => {
     let quantity = input - 1
 
     if (quantity < 0) {
-      quantity = 0
+      if (min) {
+        quantity = min
+      } else {
+        quantity = 0
+      }
     }
     setInput(quantity)
   }
@@ -23,7 +34,7 @@ const QuantityInput = ({ input, setInput }: Prop) => {
   }
 
   return (
-    <div className="flex items-center border border-gray-200">
+    <div className="flex items-center border border-gray-200 justify-center">
       <button
         type="button"
         className="w-8 h-10 leading-10 text-white transition hover:bg-yellow-300/80"

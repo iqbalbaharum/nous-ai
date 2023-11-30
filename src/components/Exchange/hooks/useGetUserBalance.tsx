@@ -4,45 +4,24 @@ import RPC from 'utils/ethers'
 const contractABI = [
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'address', name: '', type: 'address' },
     ],
-    name: 'getUserBalanceKeys',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    name: 'balanceKeys',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     name: 'keySupply',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
 ]
 
-const useUserKeyBalance = (tokenId: string) => {
+const useUserKeyBalance = (tokenId: string, address: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
@@ -60,8 +39,8 @@ const useUserKeyBalance = (tokenId: string) => {
       const balance = await rpc.readContractData({
         contractABI,
         contractAddress: import.meta.env.VITE_NOUS_AIFI as string,
-        method: 'getUserBalanceKeys',
-        data: [tokenId],
+        method: 'balanceKeys',
+        data: [tokenId, address],
       })
 
       setIsSuccess(true)
@@ -71,7 +50,7 @@ const useUserKeyBalance = (tokenId: string) => {
     } finally {
       setIsLoading(false)
     }
-  }, [tokenId])
+  }, [address, tokenId])
 
   const getTokenKeyCount = useCallback(async () => {
     setIsLoading(true)

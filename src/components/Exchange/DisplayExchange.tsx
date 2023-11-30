@@ -9,12 +9,14 @@ import { useEffect, useState } from 'react'
 import SubscribePrice from './SubscribePrice'
 import ExchangeTransaction from './Transactions'
 import useUserKeyBalance from './hooks/useGetUserBalance'
+import { useConnectedWallet } from 'hooks/use-connected-wallet'
 interface Prop {
   nft: Nft & NousNft & { dataKey: string }
 }
 
 const DisplayExchange = (prop: Prop) => {
-  const { keyCount, totalTokenKeyCount } = useUserKeyBalance(prop.nft.token_id as string)
+  const { address } = useConnectedWallet()
+  const { keyCount, totalTokenKeyCount } = useUserKeyBalance(prop.nft.token_id as string, address.full)
 
   return (
     <div className="h-full">
@@ -28,17 +30,17 @@ const DisplayExchange = (prop: Prop) => {
           </TypographyNormal>
         </div>
         <hr className="h-px bg-blue-800 border-0 w-full" />
-        <div className="flex gap-2 p-4 items-center bg-blue-800/60">
-          <div className="w-1/2 border-r border-blue-800/60">
-            <SubscribeButton nft={prop.nft} currentKeyCount={keyCount} />
+        <div className="flex gap-2 p-4 items-center justify-center bg-blue-800/60">
+          <div className="w-1/2">
+            <SubscribeButton tokenId={prop.nft.token_id as string} userKeyCount={keyCount} />
           </div>
-          <div className="flex-auto">
-            <UnsubscribeButton nft={prop.nft} currentKeyCount={keyCount} />
+          <div className="w-1/2">
+            <UnsubscribeButton nft={prop.nft} userKeyCount={keyCount} />
           </div>
         </div>
         <hr className="h-px bg-blue-800 border-0 w-full" />
         <div className="flex gap-2 p-4 justify-start bg-blue-800/60">
-          <GoToDappButton dataKey={prop.nft.dataKey} />
+          <GoToDappButton dataKey={prop.nft.dataKey} disabled={keyCount <= 0} />
         </div>
         <hr className="h-px bg-blue-800 border-0 w-full" />
         <ExchangeTransaction />

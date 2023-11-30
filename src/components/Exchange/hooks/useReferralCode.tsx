@@ -1,38 +1,27 @@
 import { useConnectedWallet } from 'hooks/use-connected-wallet'
 import { useCallback, useEffect, useState } from 'react'
+import { hexToBase58 } from 'utils'
 import RPC from 'utils/ethers'
 
 const contractABI = [
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-    ],
-    name: 'isAddressAllowlisted',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getCode',
+    outputs: [{ internalType: 'bytes', name: '', type: 'bytes' }],
     stateMutability: 'view',
     type: 'function',
   },
 ]
 
-const useCheckAllowedList = () => {
+const useReferralCode = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
-  const [isAllowed, setIsAllowed] = useState(false)
+  const [refCode, setRefCode] = useState('')
 
   const { address } = useConnectedWallet()
 
-  const checkIsAllowed = useCallback(async () => {
+  const checkIfHaveCode = useCallback(async () => {
     setIsLoading(true)
     setError('')
     setIsSuccess(false)
@@ -40,18 +29,18 @@ const useCheckAllowedList = () => {
     try {
       const rpc = new RPC(window?.ethereum as any)
 
-      const isAllowed = await rpc.readContractData({
+      const code = await rpc.readContractData({
         contractABI,
-        contractAddress: import.meta.env.VITE_NOUS_AIFI as string,
-        method: 'isAddressAllowlisted',
+        contractAddress: import.meta.env.VITE_NOUS_REF as string,
+        method: 'getCode',
         data: [address?.full],
       })
 
       setIsSuccess(true)
-      setIsAllowed(isAllowed as boolean)
+      setRefCode(`NP-${hexToBase58(code as string)}`)
     } catch (error: any) {
       setError(error.reason as string)
-      setIsAllowed(false)
+      setRefCode('')
     } finally {
       setIsLoading(false)
     }
@@ -59,11 +48,11 @@ const useCheckAllowedList = () => {
 
   useEffect(() => {
     if (address?.full) {
-      checkIsAllowed().catch(console.log)
+      checkIfHaveCode().catch(console.log)
     }
-  }, [address?.full, checkIsAllowed])
+  }, [address?.full, checkIfHaveCode])
 
-  return { isAllowed, isLoading, error, isSuccess }
+  return { refCode, isLoading, error, isSuccess }
 }
 
-export default useCheckAllowedList
+export default useReferralCode

@@ -2,12 +2,15 @@ import GenericButton from 'components/Button/GenericButton'
 import ExchangeCard from 'components/Exchange'
 import DisplayExchange from 'components/Exchange/DisplayExchange'
 import ExchangeNotAllowed from 'components/Exchange/NotAllowed'
+import ReferralBox from 'components/Exchange/Referral'
 import ExchangeStats from 'components/Exchange/Stats'
+import useAllowedList from 'components/Exchange/hooks/useAllowedList'
 import useCheckAllowedList from 'components/Exchange/hooks/useIsAllowed'
 import { DownArrow, UpArrow } from 'components/Icons/misc'
 import { OpenseaIcon } from 'components/Icons/socials'
 import ScrollController from 'components/ScrollController'
 import TypographyNormal from 'components/Typography/Normal'
+import { useConnectedWallet } from 'hooks/use-connected-wallet'
 import { useRef, useState } from 'react'
 import { useGetAllBots } from 'repositories/rpc.repository'
 
@@ -15,7 +18,9 @@ const PageExchange = () => {
   const [selectedNftIndex, setSelectedNftIndex] = useState(0)
   const scrollContainerRef = useRef(null)
 
-  const { isAllowed } = useCheckAllowedList()
+  const { address } = useConnectedWallet()
+
+  const { isAllowed } = useAllowedList({ address: address?.full })
 
   const { data: bots } = useGetAllBots(50, 0)
 
@@ -60,6 +65,7 @@ const PageExchange = () => {
           </>
         )}
         {!isAllowed && <ExchangeNotAllowed />}
+        <ReferralBox />
       </div>
     </>
   )

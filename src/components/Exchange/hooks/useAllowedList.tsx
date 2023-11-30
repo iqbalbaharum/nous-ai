@@ -1,107 +1,89 @@
 import { ethers } from 'ethers'
-import { useCallback, useState } from 'react'
-import { RQ_KEY } from 'repositories'
-import { useNousStore } from 'store'
+import { useCallback, useEffect, useState } from 'react'
 import RPC from 'utils/ethers'
-import { useQueryClient } from 'wagmi'
 
 interface Props {
-  code: string
+  address?: string
 }
 
 const contractABI = [
   {
-    inputs: [
-      {
-        internalType: 'bytes',
-        name: 'referralCode',
-        type: 'bytes',
-      },
-    ],
+    inputs: [{ internalType: 'bytes', name: 'referralCode', type: 'bytes' }],
     name: 'enterAllowlistWithReferral',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-    ],
-    name: 'isAddressAllowlisted',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'isAllowlisted',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
 ]
 
-const useReferralCode = ({ code }: Props) => {
+const useAllowedList = ({ address }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [isSuccess, setIsSuccess] = useState(false)
+  const [isAllowed, SetIsAllowed] = useState(false)
 
-  const { selectedNous } = useNousStore()
-
-  const queryClient = useQueryClient()
-
-  const enterAllowedList = useCallback(async () => {
+  const enterAllowedList = useCallback(async (code: string) => {
     setIsLoading(true)
     setError('')
-    setIsSuccess(false)
+
+    try {
+      const ethersProvider = new ethers.BrowserProvider(window?.ethereum as any)
+      const signer = await ethersProvider.getSigner()
+      const contract = new ethers.Contract(import.meta.env.VITE_NOUS_AIFI as string, contractABI, signer)
+      const tx = await contract.enterAllowlistWithReferral(code)
+      await tx.wait()
+    } catch (error: any) {
+      console.log(error)
+      setError(error.reason as string)
+      throw new Error(error.reason as string)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const checkAllowEntry = useCallback(async () => {
+    setIsLoading(true)
+    setError('')
 
     try {
       const rpc = new RPC(window?.ethereum as any)
 
-      await rpc.callContractMethod({
+      const allowed = await rpc.readContractData({
         contractABI,
         contractAddress: import.meta.env.VITE_NOUS_AIFI as string,
-        method: 'enterAllowlistWithReferral',
-        data: [],
+        method: 'isAllowlisted',
+        data: [address!],
       })
+
+      SetIsAllowed(allowed as boolean)
     } catch (error: any) {
       setError(error.reason as string)
       throw new Error(error.reason as string)
     } finally {
       setIsLoading(false)
-      setIsSuccess(true)
-      await queryClient.invalidateQueries([RQ_KEY.GET_PERK_BY_TOKEN_ID, Number(selectedNous?.token_id)])
     }
-  }, [queryClient, selectedNous?.token_id])
+  }, [address])
 
-  const isAllowed = useCallback(async () => {
-    setIsLoading(true)
-    setError('')
-    setIsSuccess(false)
-
-    try {
-      const rpc = new RPC(window?.ethereum as any)
-
-      await rpc.readContractData({
-        contractABI,
-        contractAddress: import.meta.env.VITE_NOUS_AIFI as string,
-        method: 'isAll',
-        data: [],
-      })
-    } catch (error: any) {
-      setError(error.reason as string)
-      throw new Error(error.reason as string)
-    } finally {
-      setIsLoading(false)
-      setIsSuccess(true)
-      await queryClient.invalidateQueries([RQ_KEY.GET_PERK_BY_TOKEN_ID, Number(selectedNous?.token_id)])
+  const validateCode = (input: string) => {
+    if (input.startsWith('NP-')) {
+      return input.substring(3)
+    } else {
+      throw Error('Invalid referal code')
     }
-  }, [queryClient, selectedNous?.token_id])
+  }
 
-  return { enterAllowedList, isLoading, error, isSuccess }
+  useEffect(() => {
+    if (address) {
+      checkAllowEntry().catch(console.log)
+    }
+  }, [address, checkAllowEntry, isAllowed])
+  return { enterAllowedList, isAllowed, validateCode, isLoading, error }
 }
 
-export default useReferralCode
+export default useAllowedList

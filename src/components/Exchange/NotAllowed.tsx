@@ -3,36 +3,51 @@ import TypographyNormal from 'components/Typography/Normal'
 import { useEffect, useState } from 'react'
 import useReferralCode from './hooks/useAllowedList'
 import { useBoundStore } from 'store'
+import { base58ToHex, hexToBase58 } from 'utils'
+import { useConnectedWallet } from 'hooks/use-connected-wallet'
 
 const ExchangeNotAllowed = () => {
   const [inputValue, setInputValue] = useState<string>('')
 
-  const { enterAllowedList, error, isSuccess } = useReferralCode({ code: inputValue })
+  const { address } = useConnectedWallet()
+  const { enterAllowedList, validateCode, error } = useReferralCode({ address: address.full })
   const { setModalState } = useBoundStore()
 
   const onSubmitClicked = async () => {
     try {
-      // remove NOUS- NOUS-8FprTmXBYuyMFC27y9SdaQo9i1fphk7xWCBVFsNmvyED
-      // convert input to bytes
-      await enterAllowedList()
-    } catch (e) {
+      const input = validateCode(inputValue)
+
+      if (input) {
+        const hex = base58ToHex(input)
+        await enterAllowedList(hex)
+        setModalState({
+          alert: {
+            isOpen: true,
+            state: 'success',
+            message: `Code accepted.`,
+            onOkClicked: () => {
+              alert('cool')
+            },
+          },
+        })
+      } else {
+        throw Error('Invalid referal code')
+      }
+    } catch (e: any) {
+      setModalState({
+        alert: { isOpen: true, state: 'failed', message: `${e}` },
+      })
       console.log(e)
     }
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      setModalState({
-        alert: { isOpen: true, state: 'success', message: `Quest submitted` },
-      })
-    }
-
     if (error) {
       setModalState({
-        alert: { isOpen: true, state: 'failed', message: `Referal code error: ${error}` },
+        alert: { isOpen: true, state: 'failed', message: `${error}` },
       })
     }
-  }, [isSuccess, setModalState, error])
+  }, [setModalState, error])
 
   return (
     <>
@@ -45,7 +60,7 @@ const ExchangeNotAllowed = () => {
           <div className="h-48 flex flex-col items-center justify-center w-full gap-2">
             <input
               placeholder="Invite code"
-              className="p-2 w-1/3 mt-2 text-slate-600 text-lg text-center"
+              className="p-2 w-2/3 mt-2 text-slate-600 text-lg text-center"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
             />
