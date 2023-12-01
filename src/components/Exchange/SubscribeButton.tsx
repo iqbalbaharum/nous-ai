@@ -19,23 +19,15 @@ const SubscribeButton = (prop: Prop) => {
 
   const { setModalState } = useBoundStore()
 
-  const { subscribe } = useSubscription()
   const { buyPrice } = useGetBuyPrice({
     tokenId: prop.tokenId,
     amount: subscribeCount,
   })
 
-  const onClickSubscribe = async () => {
-    try {
-      await subscribe(prop.tokenId, subscribeCount)
-      setModalState({
-        alert: { isOpen: true, state: 'success', message: `Succesfully subscribed to Nous Psyche #${prop.tokenId}` },
-      })
-    } catch (e) {
-      setModalState({
-        alert: { isOpen: true, state: 'failed', message: `Subscription purchased failed` },
-      })
-    }
+  const onClickSubscribe = () => {
+    setModalState({
+      subscribe: { isOpen: true, tokenId: prop.tokenId, amount: subscribeCount },
+    })
   }
 
   useEffect(() => {

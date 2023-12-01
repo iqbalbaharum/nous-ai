@@ -7,6 +7,7 @@ import { Nft } from 'lib'
 import { NousNft } from 'lib/NousNft'
 import useGetSellPrice from './hooks/useGetSellPrice'
 import useSubscription from './hooks/useSubscription'
+import { useBoundStore } from 'store'
 
 interface Prop {
   nft: Nft & NousNft
@@ -16,11 +17,13 @@ interface Prop {
 const UnsubscribeButton = (prop: Prop) => {
   const [subscribeCount, setSubscribeCount] = useState(prop.userKeyCount)
 
-  const { unsubscribe } = useSubscription()
+  const { setModalState } = useBoundStore()
   const { sellPrice } = useGetSellPrice({ tokenId: prop.nft.token_id as string, amount: subscribeCount })
 
   const onClickUnsubscribe = () => {
-    unsubscribe(prop.nft.token_id as string, subscribeCount).catch(console.log)
+    setModalState({
+      unsubscribe: { isOpen: true, tokenId: prop.nft.token_id as string, amount: subscribeCount },
+    })
   }
 
   useEffect(() => {

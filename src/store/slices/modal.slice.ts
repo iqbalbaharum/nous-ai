@@ -25,6 +25,8 @@ export type Modal = {
   selectNous: ModalState
   campaign: ModalState & { campaign?: Campaign }
   referral: ModalState
+  subscribe: ModalState & { amount: number; tokenId: string }
+  unsubscribe: ModalState & { amount: number; tokenId: string }
   alert: ModalState & { state: string } & { message: string; onOkClicked?: () => void }
 }
 
@@ -81,6 +83,16 @@ const initialModal = {
     },
     referral: {
       isOpen: false,
+    },
+    subscribe: {
+      isOpen: false,
+      tokenId: '',
+      amount: 0,
+    },
+    unsubscribe: {
+      isOpen: false,
+      tokenId: '',
+      amount: 0,
     },
     alert: {
       isOpen: false,

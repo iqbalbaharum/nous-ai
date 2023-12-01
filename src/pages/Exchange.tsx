@@ -1,8 +1,10 @@
 import GenericButton from 'components/Button/GenericButton'
 import ExchangeCard from 'components/Exchange'
+import ExchangeBuyDialog from 'components/Exchange/BuyDialog'
 import DisplayExchange from 'components/Exchange/DisplayExchange'
 import ExchangeNotAllowed from 'components/Exchange/NotAllowed'
 import ReferralBox from 'components/Exchange/Referral'
+import ExchangeSellDialog from 'components/Exchange/SellDialog'
 import ExchangeStats from 'components/Exchange/Stats'
 import useAllowedList from 'components/Exchange/hooks/useAllowedList'
 import useCheckAllowedList from 'components/Exchange/hooks/useIsAllowed'
@@ -66,6 +68,8 @@ const PageExchange = () => {
         )}
         {!isAllowed && <ExchangeNotAllowed />}
         <ReferralBox />
+        <ExchangeBuyDialog />
+        <ExchangeSellDialog />
       </div>
     </>
   )
