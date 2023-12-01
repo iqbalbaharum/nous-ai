@@ -46,11 +46,11 @@ const DisplayExchange = (prop: Prop) => {
                 <TypographyNormal classNames="text-sm text-yellow-400">Subscriber Tiers</TypographyNormal>
               </div>
               {keyCount > 0 && (
-                <>
-                  <div className="flex gap-2 justify-start p-4">
+                <div className="p-4">
+                  <div className="flex gap-2 justify-start">
                     <GoToDappButton dataKey={prop.nft.dataKey} disabled={keyCount <= 0} />
                   </div>
-                </>
+                </div>
               )}
               {keyCount == 0 && (
                 <>

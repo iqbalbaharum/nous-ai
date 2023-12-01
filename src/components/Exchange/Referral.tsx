@@ -12,7 +12,7 @@ const ReferralBox = () => {
   const { modal, setModalState } = useBoundStore()
   const { refCode, totalCodeUsed, maxCodeUsed, refereeAmount, totalRefereeAmount, userReward, refetch } =
     useReferralCode()
-  const { claimReferralFee } = useClaimReferral()
+  const { claimReferralFee, isLoading } = useClaimReferral()
   const copyToClipboard = useClipboard()
 
   const onClickClaim = async () => {
@@ -130,7 +130,11 @@ const ReferralBox = () => {
 
                   <div className="absolute bottom-0 w-full">
                     <div className="w-full px-5 py-2 flex justify-between gap-2">
-                      <GenericButton name="Claim" onClick={onClickClaim} />
+                      <GenericButton
+                        name={isLoading ? 'Processing' : 'Claim'}
+                        onClick={onClickClaim}
+                        disabled={userReward.length <= 0 || isLoading}
+                      />
                     </div>
                   </div>
                 </div>
