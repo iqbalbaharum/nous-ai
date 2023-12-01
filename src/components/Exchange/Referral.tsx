@@ -73,9 +73,7 @@ const ReferralBox = () => {
                         className="text-left flex items-center gap-3 justify-start cursor-pointer"
                         onClick={() => {}}
                       >
-                        {refCode && (
-                          <TypographyNormal classNames="uppercase text-sm text-white">{refCode}</TypographyNormal>
-                        )}
+                        {refCode && <TypographyNormal classNames="text-sm text-white">{refCode}</TypographyNormal>}
                         {!refCode && <ExchangeAssignRefCodeButton />}
                       </div>
                     </div>

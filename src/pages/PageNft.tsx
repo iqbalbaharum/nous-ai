@@ -15,6 +15,9 @@ import { useGetPerkByTokenId } from 'repositories/perk.repository'
 import Avatar from 'components/Avatar'
 import PerkCardNft from 'components/PerkCard/PerkCardNft'
 import GenericButton from 'components/Button/GenericButton'
+import TypographyNormal from 'components/Typography/Normal'
+import useReferralCode from 'components/Exchange/hooks/useReferralCode'
+import ExchangeAssignRefCodeButton from 'components/Exchange/AssignCodeButton'
 
 const PageNft = () => {
   const location = useLocation()
@@ -56,6 +59,7 @@ const PageNft = () => {
   })
 
   const { data: owned } = useGetOwnedNousMetadatas(address.full)
+  const { refCode } = useReferralCode()
 
   useEffect(() => {
     if (!nft || !nft.token) {
@@ -139,7 +143,7 @@ const PageNft = () => {
       {nft && (
         <div className="flex justify-center">
           <div className="block w-3/4">
-            <div className="bg-[#181818] rounded p-4">
+            <div className="bg-blue-600/80 ring ring-white border border-blue-600 backdrop-blur p-4">
               <div className="flex">
                 <div className="flex-auto w-1/4">
                   <Avatar imgMain={nft.metadata.image} imgBadge={badge?.content.src} badgeSize="12" />
@@ -188,9 +192,18 @@ const PageNft = () => {
                 </div>
               </div>
             </div>
+            <div className="mt-5 p-4 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ring ring-white/90 from-green-500 to-green-600">
+              <div className="text-2xl font-semibold">
+                <TypographyNormal classNames="uppercase text-yellow-400">Referral Code</TypographyNormal>
+              </div>
+              {refCode && <TypographyNormal classNames="text-sm text-white">{refCode}</TypographyNormal>}
+              {!refCode && <ExchangeAssignRefCodeButton />}
+            </div>
 
-            <div className="mt-5 bg-[#181818] rounded p-4">
-              <div className="text-2xl font-semibold mb-4">Tools</div>
+            <div className="mt-5 bg-blue-600/80 ring ring-white border border-blue-600 backdrop-blur p-4">
+              <div className="text-2xl font-semibold mb-4">
+                <TypographyNormal>Tools</TypographyNormal>
+              </div>
               <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-4">
                 {nous_id && <GenericButton name="Chat" onClick={goToChatroom} />}
 
