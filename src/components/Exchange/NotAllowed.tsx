@@ -10,7 +10,7 @@ const ExchangeNotAllowed = () => {
   const [inputValue, setInputValue] = useState<string>('')
 
   const { address } = useConnectedWallet()
-  const { enterAllowedList, validateCode, error } = useReferralCode({ address: address.full })
+  const { enterAllowedList, validateCode, isLoading, error } = useReferralCode({ address: address.full })
   const { setModalState } = useBoundStore()
 
   const onSubmitClicked = async () => {
@@ -26,7 +26,7 @@ const ExchangeNotAllowed = () => {
             state: 'success',
             message: `Code accepted.`,
             onOkClicked: () => {
-              alert('cool')
+              window.location.reload()
             },
           },
         })
@@ -52,19 +52,19 @@ const ExchangeNotAllowed = () => {
   return (
     <>
       <div className="p-4 text-center fixed left-1/2 md:w-2/4 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ring ring-white bg-blue-600/80 backdrop-blur text-white h-2/5 w-1/2">
-        <div className="flex flex-col gap-2 items-center">
+        <div className="h-56 flex flex-col justify-center gap-2 items-center">
           <TypographyNormal>
             Exchange is still in <span className="font-semibold text-yellow-400 mt-2">Beta</span>, paste your invite to
             join
           </TypographyNormal>
-          <div className="h-48 flex flex-col items-center justify-center w-full gap-2">
+          <div className="mt-2 flex flex-col items-center justify-center w-full gap-2">
             <input
               placeholder="Invite code"
-              className="p-2 w-2/3 mt-2 text-slate-600 text-lg text-center"
+              className="p-2 w-3/4 mt-2 text-slate-600 text-sm text-center"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
             />
-            <GenericButton name="Submit" onClick={onSubmitClicked} />
+            <GenericButton name={isLoading ? 'Processing' : 'Submit'} disabled={isLoading} onClick={onSubmitClicked} />
           </div>
         </div>
       </div>

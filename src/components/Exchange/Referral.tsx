@@ -10,7 +10,8 @@ import useClipboard from 'hooks/useClipboard'
 
 const ReferralBox = () => {
   const { modal, setModalState } = useBoundStore()
-  const { refCode, maxCodeUsed, refereeAmount, totalRefereeAmount, userReward, refetch } = useReferralCode()
+  const { refCode, totalCodeUsed, maxCodeUsed, refereeAmount, totalRefereeAmount, userReward, refetch } =
+    useReferralCode()
   const { claimReferralFee } = useClaimReferral()
   const copyToClipboard = useClipboard()
 
@@ -88,7 +89,9 @@ const ReferralBox = () => {
                         REFERRAL CODE USAGE
                       </TypographyNormal>
                       <div className="text-left flex items-center gap-3 justify-start">
-                        <TypographyNormal classNames="uppercase text-lg text-white">-/{maxCodeUsed}</TypographyNormal>
+                        <TypographyNormal classNames="uppercase text-lg text-white">
+                          {totalCodeUsed}/{maxCodeUsed}
+                        </TypographyNormal>
                       </div>
                     </div>
                     <div className="flex gap-4 justify-between">

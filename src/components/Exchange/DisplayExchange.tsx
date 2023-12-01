@@ -41,20 +41,20 @@ const DisplayExchange = (prop: Prop) => {
               </div>
             </div>
             <hr className="h-px bg-blue-800 border-0 w-full" />
-            <div className="bg-green-800/40 p-4">
-              <div className="mb-2">
-                <TypographyNormal classNames="text-yellow-400 text-center">Subscriber Benefit</TypographyNormal>
+            <div className="bg-green-800/40">
+              <div className="bg-green-500/50 p-1 text-center">
+                <TypographyNormal classNames="text-sm text-yellow-400">Subscriber Tiers</TypographyNormal>
               </div>
               {keyCount > 0 && (
                 <>
-                  <div className="flex gap-2 justify-start">
+                  <div className="flex gap-2 justify-start p-4">
                     <GoToDappButton dataKey={prop.nft.dataKey} disabled={keyCount <= 0} />
                   </div>
                 </>
               )}
               {keyCount == 0 && (
                 <>
-                  <div className="flex gap-2 justify-start">Subscribe to this AI-NFT to use AI-NFT services</div>
+                  <div className="flex gap-2 justify-center p-4">Subscribe to this AI-NFT to use AI-NFT services</div>
                 </>
               )}
             </div>

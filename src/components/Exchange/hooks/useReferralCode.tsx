@@ -40,6 +40,13 @@ const contractABI = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [{ internalType: 'bytes', name: '', type: 'bytes' }],
+    name: 'totalCodeUsed',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ]
 
 const useReferralCode = () => {
@@ -52,14 +59,13 @@ const useReferralCode = () => {
   const [totalRefereeAmount, setTotalRefereeAmount] = useState(0)
   const [referralFeePool, setReferralFeePool] = useState(0)
   const [maxCodeUsed, setMaxCodeUsed] = useState(0)
+  const [totalCodeUsed, setTotalCodeUsed] = useState(0)
   const [userReward, setUserReward] = useState('')
 
   const { address } = useConnectedWallet()
 
   const checkIfHaveCode = useCallback(async () => {
-    setIsLoading(true)
     setError('')
-    setIsSuccess(false)
 
     try {
       const rpc = new RPC(window?.ethereum as any)
@@ -71,8 +77,16 @@ const useReferralCode = () => {
         data: [address?.full],
       })
 
-      setIsSuccess(true)
       setRefCode(`NP-${hexToBase58(code as string)}`)
+
+      const totalCodeUsed = await rpc.readContractData({
+        contractABI,
+        contractAddress: import.meta.env.VITE_NOUS_REF as string,
+        method: 'totalCodeUsed',
+        data: [code],
+      })
+
+      setTotalCodeUsed(Number(totalCodeUsed))
     } catch (error: any) {
       setError(error.reason as string)
       setRefCode('')
@@ -196,6 +210,7 @@ const useReferralCode = () => {
     refetch,
     refCode,
     maxCodeUsed,
+    totalCodeUsed,
     refereeAmount,
     totalRefereeAmount,
     referralFeePool,
