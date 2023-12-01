@@ -4,14 +4,35 @@ import { Fragment } from 'react'
 import TypographyNormal from 'components/Typography/Normal'
 import GenericButton from 'components/Button/GenericButton'
 import useReferralCode from './hooks/useReferralCode'
-import { CopyIcon } from 'components/Icons/icons'
-import useAssignCode from './hooks/useAssignCode'
 import ExchangeAssignRefCodeButton from './AssignCodeButton'
+import useClaimReferral from './hooks/useClaimReferal'
 
 const ReferralBox = () => {
   const { modal, setModalState } = useBoundStore()
-  const { refCode } = useReferralCode()
+  const { refCode, maxCodeUsed, refereeAmount, totalRefereeAmount, userReward, refetch } = useReferralCode()
+  const { claimReferralFee } = useClaimReferral()
 
+  const onClickClaim = async () => {
+    try {
+      await claimReferralFee()
+      refetch()
+      setModalState({
+        alert: {
+          isOpen: true,
+          state: 'success',
+          message: `Successfully claim referral fee`,
+        },
+      })
+    } catch (e) {
+      setModalState({
+        alert: {
+          isOpen: true,
+          state: 'failed',
+          message: `Failed to claim referral fee: ${(e as any).reason}`,
+        },
+      })
+    }
+  }
   return (
     <>
       <Transition appear show={modal.referral.isOpen} as={Fragment}>
@@ -63,7 +84,7 @@ const ReferralBox = () => {
                         REFERRAL CODE USAGE
                       </TypographyNormal>
                       <div className="text-left flex items-center gap-3 justify-start">
-                        <TypographyNormal classNames="uppercase text-lg text-white">3/3</TypographyNormal>
+                        <TypographyNormal classNames="uppercase text-lg text-white">-/{maxCodeUsed}</TypographyNormal>
                       </div>
                     </div>
                     <div className="flex gap-4 justify-between">
@@ -72,7 +93,7 @@ const ReferralBox = () => {
                           REFERRAL AMOUNT
                         </TypographyNormal>
                         <div className="text-left flex items-center gap-3 justify-start">
-                          <TypographyNormal classNames="uppercase text-lg text-white">32</TypographyNormal>
+                          <TypographyNormal classNames="uppercase text-lg text-white">{refereeAmount}</TypographyNormal>
                         </div>
                       </div>
                       <div className="">
@@ -80,7 +101,10 @@ const ReferralBox = () => {
                           RATIO
                         </TypographyNormal>
                         <div className="text-left flex items-center gap-3 justify-start">
-                          <TypographyNormal classNames="uppercase text-lg text-white">2.2%</TypographyNormal>
+                          <TypographyNormal classNames="uppercase text-lg text-white">
+                            {totalRefereeAmount > 0 && (refereeAmount / totalRefereeAmount) * 100}
+                            {totalRefereeAmount == 0 && 0} %
+                          </TypographyNormal>
                         </div>
                       </div>
                       <div className="">
@@ -88,7 +112,9 @@ const ReferralBox = () => {
                           REFERRAL REWARD
                         </TypographyNormal>
                         <div className="text-left flex items-center gap-3 justify-start">
-                          <TypographyNormal classNames="uppercase text-lg text-white">0.0345 ETH</TypographyNormal>
+                          <TypographyNormal classNames="uppercase text-lg text-white">
+                            {userReward.length > 0 ? userReward : 0} ETH
+                          </TypographyNormal>
                         </div>
                       </div>
                     </div>
@@ -97,7 +123,7 @@ const ReferralBox = () => {
 
                   <div className="absolute bottom-0 w-full">
                     <div className="w-full px-5 py-2 flex justify-between gap-2">
-                      <GenericButton name="Claim" onClick={() => setModalState({ referral: { isOpen: false } })} />
+                      <GenericButton name="Claim" onClick={onClickClaim} />
                     </div>
                   </div>
                 </div>

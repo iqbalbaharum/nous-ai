@@ -76,13 +76,18 @@ const useUserKeyBalance = (tokenId: string, address: string) => {
     }
   }, [tokenId])
 
+  const refetch = useCallback(() => {
+    getUserKeyCount().catch(console.log)
+    getTokenKeyCount().catch(console.log)
+  }, [getTokenKeyCount, getUserKeyCount])
+
   useEffect(() => {
     if (tokenId) {
-      getUserKeyCount().catch(console.log)
-      getTokenKeyCount().catch(console.log)
+      refetch()
     }
-  }, [getTokenKeyCount, getUserKeyCount, tokenId])
-  return { keyCount: balance, totalTokenKeyCount: tokenKeyBalance, isLoading, error, isSuccess }
+  }, [refetch, tokenId])
+
+  return { keyCount: balance, totalTokenKeyCount: tokenKeyBalance, refetch, isLoading, error, isSuccess }
 }
 
 export default useUserKeyBalance

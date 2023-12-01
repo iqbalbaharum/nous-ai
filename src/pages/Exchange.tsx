@@ -58,7 +58,7 @@ const PageExchange = () => {
                       />
                     ))}
                 </div>
-                <ScrollController targetRef={scrollContainerRef} />
+                {bots && bots.length > 3 && <ScrollController targetRef={scrollContainerRef} />}
               </div>
             </div>
             <div className="p-2 w-full md:w-1/2 lg:h-[600px]">

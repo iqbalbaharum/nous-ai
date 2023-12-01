@@ -27,11 +27,11 @@ const ExchangeCard = (prop: Prop) => {
         />
         <div className="flex flex-col justify-center">
           <TypographyNormal>{prop.nft.metadata.name}</TypographyNormal>
-          <TypographyNormal classNames="uppercase font-bold text-yellow-300">38 subscribers</TypographyNormal>
+          <TypographyNormal classNames="uppercase font-bold text-yellow-300">
+            {prop.nft.stat.level && `Level ${prop.nft.stat.level}`}
+            {!prop.nft.stat.level && `Not Activated`}
+          </TypographyNormal>
         </div>
-      </div>
-      <div>
-        <TypographyNormal classNames="uppercase font-bold text-yellow-300">0.06 ETH</TypographyNormal>
       </div>
     </div>
   )

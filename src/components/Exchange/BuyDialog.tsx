@@ -5,15 +5,19 @@ import { Fragment } from 'react'
 import { useBoundStore } from 'store'
 import useSubscription from './hooks/useSubscription'
 import useGetBuyPrice from './hooks/useGetBuyPrice'
+import { useConnectedWallet } from 'hooks/use-connected-wallet'
+import useUserKeyBalance from './hooks/useGetUserBalance'
 
 const ExchangeBuyDialog = () => {
   const { subscribe } = useSubscription()
   const { modal, setModalState } = useBoundStore()
+  const { address } = useConnectedWallet()
 
   const { buyPrice, buyPriceAfterTax } = useGetBuyPrice({
     tokenId: modal.subscribe.tokenId,
     amount: modal.subscribe.amount,
   })
+  const { refetch } = useUserKeyBalance(modal.subscribe.tokenId, address.full)
 
   const onCloseModal = () => {
     setModalState({
@@ -24,6 +28,7 @@ const ExchangeBuyDialog = () => {
   const onClickSubscribe = async () => {
     try {
       await subscribe(modal.subscribe.tokenId, modal.subscribe.amount)
+      refetch()
       setModalState({
         alert: {
           isOpen: true,
