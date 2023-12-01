@@ -6,11 +6,13 @@ import GenericButton from 'components/Button/GenericButton'
 import useReferralCode from './hooks/useReferralCode'
 import ExchangeAssignRefCodeButton from './AssignCodeButton'
 import useClaimReferral from './hooks/useClaimReferal'
+import useClipboard from 'hooks/useClipboard'
 
 const ReferralBox = () => {
   const { modal, setModalState } = useBoundStore()
   const { refCode, maxCodeUsed, refereeAmount, totalRefereeAmount, userReward, refetch } = useReferralCode()
   const { claimReferralFee } = useClaimReferral()
+  const copyToClipboard = useClipboard()
 
   const onClickClaim = async () => {
     try {
@@ -32,6 +34,10 @@ const ReferralBox = () => {
         },
       })
     }
+  }
+
+  const onClickCopy = async (text: string) => {
+    await copyToClipboard(text)
   }
   return (
     <>
@@ -71,7 +77,7 @@ const ReferralBox = () => {
                       </TypographyNormal>
                       <div
                         className="text-left flex items-center gap-3 justify-start cursor-pointer"
-                        onClick={() => {}}
+                        onClick={() => onClickCopy(refCode)}
                       >
                         {refCode && <TypographyNormal classNames="text-sm text-white">{refCode}</TypographyNormal>}
                         {!refCode && <ExchangeAssignRefCodeButton />}

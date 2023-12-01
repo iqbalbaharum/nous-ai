@@ -18,6 +18,7 @@ import GenericButton from 'components/Button/GenericButton'
 import TypographyNormal from 'components/Typography/Normal'
 import useReferralCode from 'components/Exchange/hooks/useReferralCode'
 import ExchangeAssignRefCodeButton from 'components/Exchange/AssignCodeButton'
+import useClipboard from 'hooks/useClipboard'
 
 const PageNft = () => {
   const location = useLocation()
@@ -26,6 +27,7 @@ const PageNft = () => {
   const { setModalState } = useBoundStore()
   const { address } = useConnectedWallet()
   const { setOwnedPerks } = useNousStore()
+  const copyToClipboard = useClipboard()
 
   const { nft } = location.state || {}
 
@@ -138,6 +140,10 @@ const PageNft = () => {
     }
   }
 
+  const handleCopyRefCode = async (text: string) => {
+    await copyToClipboard(text)
+  }
+
   return (
     <>
       {nft && (
@@ -150,22 +156,24 @@ const PageNft = () => {
                 </div>
                 <div className="flex-auto w-3/4 px-5">
                   <div className="">
-                    <div className="text-2xl font-bold">{nft.metadata.name}</div>
+                    <div className="text-2xl font-semibold">
+                      <TypographyNormal>{nft.metadata.name}</TypographyNormal>
+                    </div>
                     <div className="mt-2 grid grid-cols-3 gap-2">
                       {bot_level && bot_level.content?.level >= 0 && (
-                        <div className="bg-yellow-300 text-black rounded-md p-2">
+                        <div className="bg-yellow-300 text-black ring-1 ring-yellow-600 p-2">
                           <div className="text-xs text-yellow-800 uppercase">Level</div>
                           <div className="uppercase font-semibold">Level {bot_level.content?.level}</div>
                         </div>
                       )}
                       {!bot_level && (
-                        <div className="bg-yellow-300 text-black rounded-md p-2">
+                        <div className="bg-yellow-300 text-black ring-1 ring-yellow-600 p-2">
                           <div className="text-xs text-yellow-800 uppercase">Level</div>
                           <div className="uppercase font-semibold">Not Activated</div>
                         </div>
                       )}
                       {nous_id && nous_id?.content && (
-                        <div className="bg-slate-700 text-black rounded-md p-2">
+                        <div className="bg-slate-700 text-black ring-1 ring-black p-2">
                           <div className="text-xs text-slate-400 uppercase">Bot</div>
                           <div className="text-gray-300 flex items-center gap-2 uppercase font-semibold">
                             <VerifiedNousIcon /> Nous Activated
@@ -173,13 +181,13 @@ const PageNft = () => {
                         </div>
                       )}
                       {nouskb && (
-                        <div className="bg-slate-700 text-black rounded-md p-2">
+                        <div className="bg-slate-700 text-black ring-1 ring-black p-2">
                           <div className="text-xs text-slate-400 uppercase">Knowledge Size</div>
                           <div className="text-gray-300 uppercase font-semibold">{nouskb.content.size_in_mb} MB</div>
                         </div>
                       )}
                       {access && (
-                        <div className="bg-slate-700 text-black rounded-md p-2">
+                        <div className="bg-slate-700 text-black ring-1 ring-black p-2">
                           <div className="text-xs text-slate-400 uppercase">Access</div>
                           <div className="text-gray-300 uppercase font-semibold">{access.content}</div>
                         </div>
@@ -193,10 +201,14 @@ const PageNft = () => {
               </div>
             </div>
             <div className="mt-5 p-4 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ring ring-white/90 from-green-500 to-green-600">
-              <div className="text-2xl font-semibold">
+              <div className="text-md tracking-wider font-semibold">
                 <TypographyNormal classNames="uppercase text-yellow-400">Referral Code</TypographyNormal>
               </div>
-              {refCode && <TypographyNormal classNames="text-sm text-white">{refCode}</TypographyNormal>}
+              {refCode && (
+                <span onClick={() => handleCopyRefCode(refCode)}>
+                  <TypographyNormal classNames="text-sm text-white cursor-pointer">{refCode}</TypographyNormal>
+                </span>
+              )}
               {!refCode && <ExchangeAssignRefCodeButton />}
             </div>
 
