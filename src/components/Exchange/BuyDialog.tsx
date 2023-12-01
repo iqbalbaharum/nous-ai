@@ -9,7 +9,7 @@ import { useConnectedWallet } from 'hooks/use-connected-wallet'
 import useUserKeyBalance from './hooks/useGetUserBalance'
 
 const ExchangeBuyDialog = () => {
-  const { subscribe } = useSubscription()
+  const { subscribe, isLoading } = useSubscription()
   const { modal, setModalState } = useBoundStore()
   const { address } = useConnectedWallet()
 
@@ -91,7 +91,11 @@ const ExchangeBuyDialog = () => {
                   </div>
                 </div>
                 <div className="text-center mb-3 fixed bottom-0 flex gap-2 right-4">
-                  <GenericButton name="Subscribe" onClick={onClickSubscribe} />
+                  <GenericButton
+                    name={!isLoading ? `Subscribe` : `Processing`}
+                    disabled={isLoading}
+                    onClick={onClickSubscribe}
+                  />
                   <GenericButton name="Cancel" onClick={onCloseModal} />
                 </div>
               </div>

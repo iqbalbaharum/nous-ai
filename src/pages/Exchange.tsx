@@ -40,9 +40,9 @@ const PageExchange = () => {
                 <ExchangeStats />
                 <hr className="my-2" />
                 <div className="flex gap-2 mb-2 px-2 pb-2">
+                  {/* <GenericButton icon={<OpenseaIcon enabled />} onClick={() => {}} />
                   <GenericButton icon={<OpenseaIcon enabled />} onClick={() => {}} />
-                  <GenericButton icon={<OpenseaIcon enabled />} onClick={() => {}} />
-                  <input className="p-2 text-black" />
+                  <input className="p-2 text-black" /> */}
                 </div>
               </div>
               <div className="relative">
