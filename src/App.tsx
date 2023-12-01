@@ -50,7 +50,7 @@ const App = () => {
             <Route path="/search" element={<PageSearch />} />
             <Route path="/perks" element={<PagePerks />} />
             <Route path="/quests" element={<PageQuest />} />
-            <Route path="/exchange" element={<PageExchange />} />
+            <Route path="/subscribe" element={<PageExchange />} />
             <Route path="/container/:key" element={<PageContainer />} />
           </Route>
           <Route element={<PublicLayout children={undefined} />}>
