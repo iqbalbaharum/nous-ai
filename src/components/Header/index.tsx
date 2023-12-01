@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Disclosure } from '@headlessui/react'
 
 import { Link, useLocation } from 'react-router-dom'
@@ -12,39 +12,31 @@ import { useConnectedWallet } from 'hooks/use-connected-wallet'
 
 export default function Header() {
   const { setCurrentWalletState, setWalletState, current } = useBoundStore()
-  const { setSelectedNous, selectedNous } = useNousStore()
+  const { setSelectedNous } = useNousStore()
   const { address, isConnected } = useAccount()
   const wallet = useConnectedWallet()
   const { chain } = useNetwork()
   const location = useLocation()
+  const prevAddressRef = useRef(address)
 
   useEffect(() => {
     if (isConnected) {
-      if (address !== wallet.address.full) {
+      if (!wallet.address.full) {
+        wallet.refreshWallet()
+        setSelectedNous(undefined)
         setCurrentWalletState({ chain: chain?.network as CURRENT_CHAIN, address, publicKey: address })
         setWalletState({ evm: { address, publicKey: address, balance: { symbol: chain?.nativeCurrency.symbol } } })
+      }
+
+      if (wallet.address.full && address !== prevAddressRef.current) {
+        window.location.reload()
       }
     }
 
     if (!isConnected) setCurrentWalletState({ chain: undefined })
 
-    if (address !== wallet.address.full) {
-      wallet.refreshWallet()
-      setCurrentWalletState({ chain: chain?.network as CURRENT_CHAIN, address, publicKey: address })
-      setWalletState({ evm: { address, publicKey: address, balance: { symbol: chain?.nativeCurrency.symbol } } })
-      setSelectedNous(undefined)
-    }
-  }, [
-    isConnected,
-    address,
-    setCurrentWalletState,
-    chain?.network,
-    chain?.nativeCurrency.symbol,
-    setWalletState,
-    setSelectedNous,
-    selectedNous,
-    wallet.address,
-  ])
+    prevAddressRef.current = address
+  }, [address, isConnected])
 
   return (
     <Disclosure as="nav" className="bg-transparent">

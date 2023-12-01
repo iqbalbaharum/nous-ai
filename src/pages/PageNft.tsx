@@ -201,7 +201,7 @@ const PageNft = () => {
               </div>
             </div>
             <div className="mt-5 p-4 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ring ring-white/90 from-green-500 to-green-600">
-              <div className="text-md tracking-wider font-semibold">
+              <div className="text-md tracking-wider font-semibold mb-2">
                 <TypographyNormal classNames="uppercase text-yellow-400">Referral Code</TypographyNormal>
               </div>
               {refCode && (

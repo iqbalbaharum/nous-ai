@@ -21,7 +21,7 @@ const ExchangeAssignRefCodeButton = () => {
 
   return (
     <>
-      <GenericButton name="Get Referral Code" onClick={onGetCodeClicked} />
+      <GenericButton name="Generate Code" onClick={onGetCodeClicked} />
     </>
   )
 }
