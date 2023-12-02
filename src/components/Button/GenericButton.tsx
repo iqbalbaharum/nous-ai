@@ -13,10 +13,10 @@ const GenericButton = ({ name, onClick, icon, className, disabled, color, textCo
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`relative px-5 py-3 overflow-hidden font-medium ${
-        textColor ?? 'text-gray-600'
-      } bg-white border border-${color ?? 'gray'}-100 shadow-inner group ${className ?? ''} ${
-        disabled ? 'cursor-not-allowed' : 'cursor-pointer'
+      className={`relative px-5 py-3 overflow-hidden font-medium ${textColor ?? 'text-gray-600'}  border border-${
+        color ?? 'gray'
+      }-100 shadow-inner group ${className ?? ''} ${
+        disabled ? 'cursor-not-allowed bg-slate-500' : 'bg-white cursor-pointer'
       }`}
     >
       <span
