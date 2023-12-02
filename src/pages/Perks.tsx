@@ -33,10 +33,10 @@ const PagePerks = () => {
 
   return (
     <>
-      <div className="flex w-full">
-        <div className="w-1/2">
-          <img src={selectedNous?.metadata.image} className="-z-10 h-48 w-48" />
-          <div className="relative bottom-0 -top-20 left-5 overflow-auto m-10">
+      <div className="flex flex-col md:flex-row w-full">
+        <div className="md:w-1/2">
+          <img src={selectedNous?.metadata.image} className="-z-10 h-48 w-48 ml-3 lg:ml-0" />
+          <div className="relative bottom-0 -top-48 md:-top-20 left-5 overflow-auto">
             <div className="h-96 p-2 flex flex-col gap-4 w-full overflow-y-scroll" ref={scrollContainerRef}>
               {perks &&
                 perks.map((perk, index) => (
@@ -52,7 +52,7 @@ const PagePerks = () => {
             <ScrollController targetRef={scrollContainerRef} />
           </div>
         </div>
-        <div className="w-1/2 h-[600px]">
+        <div className="md:w-1/2 h-[600px] -translate-y-96 md:-translate-y-0">
           {perks && perks[selectedPerkIndex] && <DisplayPerk perk={perks[selectedPerkIndex]} />}
         </div>
       </div>

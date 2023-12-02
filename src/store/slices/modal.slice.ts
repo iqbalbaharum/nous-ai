@@ -28,6 +28,7 @@ export type Modal = {
   subscribe: ModalState & { amount: number; tokenId: string }
   unsubscribe: ModalState & { amount: number; tokenId: string }
   alert: ModalState & { state: string } & { message: string; onOkClicked?: () => void }
+  smallMenu: ModalState
 }
 
 export interface ModalSlice {
@@ -99,6 +100,9 @@ const initialModal = {
       state: '',
       message: '',
       onOkClicked: () => {},
+    },
+    smallMenu: {
+      isOpen: false,
     },
   },
 }
