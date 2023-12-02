@@ -8,7 +8,6 @@ interface Prop {
 
 const ExchangeTransaction = (prop: Prop) => {
   const { data } = usePatreonTransactionByTokenId(prop.tokenId)
-
   return (
     <div className="flex flex-col gap-1 px-4 py-2">
       {data &&

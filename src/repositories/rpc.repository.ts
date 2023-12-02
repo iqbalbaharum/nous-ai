@@ -293,11 +293,6 @@ const useGetAllBots = (size: number, page: number) => {
     queryFn: async () => {
       const nfts: ({ dataKey: string } & Nft & NousNft)[] = []
 
-      // const res = await getNftsByContractAddress(
-      //   import.meta.env.VITE_NOUS_AI_NFT as string,
-      //   chainIdToNetwork(import.meta.env.VITE_DEFAULT_CHAIN_ID as string)
-      // )
-
       const { data } = await getNftsByPage({ first: size, skip: size * page })
 
       const tokenIds = data.tokens.map((nft: any) => nft.tokenId)

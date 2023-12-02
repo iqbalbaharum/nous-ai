@@ -48,15 +48,19 @@ const PageExchange = () => {
               <div className="relative">
                 <div className="w-full flex flex-col gap-2 h-[400px] overflow-auto p-2" ref={scrollContainerRef}>
                   {bots &&
-                    bots.map((nft, index) => (
-                      <ExchangeCard
-                        key={index}
-                        nft={nft}
-                        onSelectedIndex={selectedNftIndex}
-                        index={index}
-                        onClickHandler={onSelectedIndex}
-                      />
-                    ))}
+                    bots.map((nft, index) => {
+                      if (nft.stat.level.length) {
+                        return (
+                          <ExchangeCard
+                            key={index}
+                            nft={nft}
+                            onSelectedIndex={selectedNftIndex}
+                            index={index}
+                            onClickHandler={onSelectedIndex}
+                          />
+                        )
+                      }
+                    })}
                 </div>
                 {bots && bots.length > 3 && <ScrollController targetRef={scrollContainerRef} />}
               </div>
