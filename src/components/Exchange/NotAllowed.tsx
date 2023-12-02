@@ -51,7 +51,7 @@ const ExchangeNotAllowed = () => {
 
   return (
     <>
-      <div className="p-4 text-center fixed left-1/2 md:w-2/4 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ring ring-white bg-blue-600/80 backdrop-blur text-white h-2/5 w-1/2">
+      <div className="p-4 text-center fixed left-1/2 w-[90%] lg:w-2/4 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ring ring-white bg-blue-600/80 backdrop-blur text-white h-2/5">
         <div className="h-56 flex flex-col justify-center gap-2 items-center">
           <TypographyNormal>
             Exchange is still in <span className="font-semibold text-yellow-400 mt-2">Beta</span>, paste your invite to

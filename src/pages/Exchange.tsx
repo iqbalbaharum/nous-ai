@@ -8,10 +8,7 @@ import ReferralBox from 'components/Exchange/Referral'
 import ExchangeSellDialog from 'components/Exchange/SellDialog'
 import ExchangeStats from 'components/Exchange/Stats'
 import useAllowedList from 'components/Exchange/hooks/useAllowedList'
-import useCheckAllowedList from 'components/Exchange/hooks/useIsAllowed'
 import useContractPaused from 'components/Exchange/hooks/usePaused'
-import { DownArrow, UpArrow } from 'components/Icons/misc'
-import { OpenseaIcon } from 'components/Icons/socials'
 import ScrollController from 'components/ScrollController'
 import TypographyNormal from 'components/Typography/Normal'
 import { useConnectedWallet } from 'hooks/use-connected-wallet'
@@ -25,7 +22,7 @@ const PageExchange = () => {
   const { address } = useConnectedWallet()
 
   const { isAllowed } = useAllowedList({ address: address?.full })
-  const { isPaused } = useContractPaused()
+  const { isPaused, isLoaded } = useContractPaused()
 
   const { data: bots } = useGetAllBots(50, 0)
 
@@ -70,7 +67,14 @@ const PageExchange = () => {
           </>
         )}
         {!isAllowed && !isPaused && <ExchangeNotAllowed />}
-        {isPaused && <ExchangePaused />}
+        {isLoaded && isPaused && <ExchangePaused />}
+        {!isLoaded && (
+          <div className="p-4 text-center fixed left-1/2 md:w-2/4 top-1/2 -translate-x-1/2 -translate-y-1/2 transform ring ring-white bg-yellow-600/70 backdrop-blur text-white h-1/5 w-1/2">
+            <div className="h-28 flex flex-col justify-center gap-2 items-center text-2xl">
+              <TypographyNormal>Connect your wallet to view</TypographyNormal>
+            </div>
+          </div>
+        )}
         <ReferralBox />
         <ExchangeBuyDialog />
         <ExchangeSellDialog />

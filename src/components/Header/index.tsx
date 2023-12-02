@@ -88,7 +88,7 @@ export default function Header() {
 
             <Link
               to="/subscribe"
-              className={`flex items-center gap-2 px-4 py-2 h-full border-r border-l hover:bg-blue-600 backdrop-blur bg-black/60 ${
+              className={`hidden sm:flex items-center gap-2 px-4 py-2 h-full border-r border-l hover:bg-blue-600 backdrop-blur bg-black/60 ${
                 location.pathname === '/subscribe' ? 'bg-blue-600/80' : ''
               }`}
             >

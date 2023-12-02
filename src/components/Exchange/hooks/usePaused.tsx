@@ -52,6 +52,7 @@ const useContractPaused = () => {
   return {
     isPaused,
     isLoading,
+    isLoaded,
     error,
   }
 }
