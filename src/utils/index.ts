@@ -214,3 +214,7 @@ export function convertSnakeToCamelCase(obj: Record<string, any>): any {
 
   return obj
 }
+
+export function displayShortAddress(str: string) {
+  return str.substring(0, 6) + '...' + str.substring(str.length - 4)
+}

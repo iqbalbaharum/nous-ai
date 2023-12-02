@@ -59,7 +59,7 @@ const DisplayExchange = (prop: Prop) => {
               )}
             </div>
             <hr className="h-px bg-blue-800 border-0 w-full" />
-            <ExchangeTransaction />
+            <ExchangeTransaction tokenId={prop.nft.token_id as string} />
           </>
         )}
         {totalTokenKeyCount == 0 && (

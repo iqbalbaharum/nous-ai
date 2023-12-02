@@ -1,4 +1,5 @@
 import TypographyNormal from 'components/Typography/Normal'
+import { ethers } from 'ethers'
 import { Nft } from 'lib'
 import { NousNft } from 'lib/NousNft'
 
@@ -33,6 +34,9 @@ const ExchangeCard = (prop: Prop) => {
           </TypographyNormal>
         </div>
       </div>
+      <TypographyNormal classNames="text-sm">
+        {ethers.formatEther(prop.nft.latestPrice.toString())} ETH
+      </TypographyNormal>
     </div>
   )
 }

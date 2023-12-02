@@ -36,7 +36,7 @@ const PageExchange = () => {
         {isAllowed && !isPaused && (
           <>
             <div className="flex-initial w-full md:w-1/2 p-2">
-              <div className="bg-blue-600/80 backdrop-blur ring ring-white">
+              <div className="bg-blue-600 backdrop-blur ring ring-white">
                 <ExchangeStats />
                 <hr className="my-2" />
                 <div className="flex gap-2 mb-2 px-2 pb-2">

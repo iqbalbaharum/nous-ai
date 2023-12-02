@@ -66,6 +66,7 @@ const createDefaultMetadata = (token_id: string) => {
     token_id,
     chain_id: import.meta.env.VITE_DEFAULT_CHAIN_ID as string,
     dataKey: '',
+    latestPrice: 0,
     metadata: {
       name: '',
       image: '',
@@ -304,6 +305,7 @@ const useGetAllBots = (size: number, page: number) => {
       for (let i = 0; i < tokenIds.length; i++) {
         const tokenId = tokenIds[i]
         const json = createDefaultMetadata(tokenId)
+        json.latestPrice = data.tokens[i].latestPrice
 
         const [
           contentFromMetadata,
