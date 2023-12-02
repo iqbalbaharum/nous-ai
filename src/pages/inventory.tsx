@@ -48,7 +48,7 @@ const PageInventory = () => {
                 color="blue"
                 className="text-xs lg:text-sm"
                 textColor="text-blue-600"
-                onClick={() => {}}
+                onClick={() => window.open('https://opensea.io/collection/thenouspsyche', '_blank')}
               />
             </div>
             <div className="grid gap-2 sm:grid-cols-1 md:grid-cols-2">
