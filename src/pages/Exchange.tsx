@@ -3,11 +3,13 @@ import ExchangeCard from 'components/Exchange'
 import ExchangeBuyDialog from 'components/Exchange/BuyDialog'
 import DisplayExchange from 'components/Exchange/DisplayExchange'
 import ExchangeNotAllowed from 'components/Exchange/NotAllowed'
+import ExchangePaused from 'components/Exchange/Paused'
 import ReferralBox from 'components/Exchange/Referral'
 import ExchangeSellDialog from 'components/Exchange/SellDialog'
 import ExchangeStats from 'components/Exchange/Stats'
 import useAllowedList from 'components/Exchange/hooks/useAllowedList'
 import useCheckAllowedList from 'components/Exchange/hooks/useIsAllowed'
+import useContractPaused from 'components/Exchange/hooks/usePaused'
 import { DownArrow, UpArrow } from 'components/Icons/misc'
 import { OpenseaIcon } from 'components/Icons/socials'
 import ScrollController from 'components/ScrollController'
@@ -23,6 +25,7 @@ const PageExchange = () => {
   const { address } = useConnectedWallet()
 
   const { isAllowed } = useAllowedList({ address: address?.full })
+  const { isPaused } = useContractPaused()
 
   const { data: bots } = useGetAllBots(50, 0)
 
@@ -33,7 +36,7 @@ const PageExchange = () => {
   return (
     <>
       <div className="w-full md:flex">
-        {isAllowed && (
+        {isAllowed && !isPaused && (
           <>
             <div className="flex-initial w-full md:w-1/2 p-2">
               <div className="bg-blue-600/80 backdrop-blur ring ring-white">
@@ -66,7 +69,8 @@ const PageExchange = () => {
             </div>
           </>
         )}
-        {!isAllowed && <ExchangeNotAllowed />}
+        {!isAllowed && !isPaused && <ExchangeNotAllowed />}
+        {isPaused && <ExchangePaused />}
         <ReferralBox />
         <ExchangeBuyDialog />
         <ExchangeSellDialog />
