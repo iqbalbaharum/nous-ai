@@ -23,16 +23,17 @@ import PublicLayout from 'layouts/PublicLayout'
 import PageAdmin from 'pages/admin'
 import { RainbowKitProvider, connectorsForWallets, lightTheme } from '@rainbow-me/rainbowkit'
 import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
-import PageSearch from 'pages/PageSearch'
-import PageMint from 'pages/Mint'
-import PageBot from 'pages/Bot2'
-import PageExplorer from 'pages/Explorer'
-import PageContainer from 'pages/Container'
-import PageBot2 from 'pages/Bot2'
-import PagePerks from 'pages/Perks'
-import PageQuest from 'pages/Quest'
-import PageExchange from 'pages/Exchange'
-import { web3AuthConnector } from 'hooks/wagmi-web3auth-connector'
+import loadable from '@loadable/component'
+
+const PageSearch = loadable(() => import('pages/PageSearch'))
+const PageMint = loadable(() => import('pages/Mint'))
+const PageBot = loadable(() => import('pages/Bot2'))
+const PageExplorer = loadable(() => import('./pages/Explorer'))
+const PageContainer = loadable(() => import('pages/Container'))
+const PageBot2 = loadable(() => import('pages/Bot2'))
+const PagePerks = loadable(() => import('pages/Perks'))
+const PageQuest = loadable(() => import('pages/Quest'))
+const PageBuilder = loadable(() => import('pages/Builder'))
 
 const App = () => {
   return (
@@ -40,7 +41,7 @@ const App = () => {
       <LitProtocolProvider>
         <Routes>
           <Route element={<MainLayout children={undefined} />}>
-            <Route path="/" element={<PageIndex />} />
+            <Route path="/" element={<PageExplorer />} />
             <Route path="/nft" element={<PageNft />} />
             <Route path="/inventory" element={<PageInventory />} />
             <Route path="/admin" element={<PageAdmin />} />
@@ -51,12 +52,12 @@ const App = () => {
             <Route path="/search" element={<PageSearch />} />
             <Route path="/perks" element={<PagePerks />} />
             <Route path="/quests" element={<PageQuest />} />
-            <Route path="/subscribe" element={<PageExchange />} />
+            {/* <Route path="/subscribe" element={<PageExchange />} /> */}
             <Route path="/container/:key" element={<PageContainer />} />
-          </Route>
-          <Route element={<PublicLayout children={undefined} />}>
+            <Route path="/builder" element={<PageBuilder />} />
             <Route path="/room/:key" element={<PageRoom />} />
           </Route>
+          <Route element={<PublicLayout children={undefined} />}></Route>
         </Routes>
       </LitProtocolProvider>
     </ApiProvider>
