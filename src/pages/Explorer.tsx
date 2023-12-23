@@ -34,7 +34,7 @@ export const CustomChatCardSkeleton = () => {
 }
 
 const PageExplorer = () => {
-  const { data, fetchNextPage, isLoading } = useGetAllBots(10)
+  const { data, fetchNextPage, isLoading } = useGetAllBots(50)
 
   const { ref, inView } = useInView()
   const bots = data?.pages?.flatMap(group => group.data)
